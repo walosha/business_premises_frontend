@@ -3,8 +3,29 @@ import React from "react";
 // layout for page
 
 import Auth from "layouts/Auth.js";
+import { registerForm } from "site-constant";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import axios from "axios";
 
 export default function Register() {
+  const { schema } = registerForm;
+  const {
+    handleSubmit,
+    formState: { errors },
+    register,
+  } = useForm({
+    mode: "all",
+    resolver: yupResolver(schema),
+  });
+
+  const onSubmit = (data) => {
+    axios
+      .post("/api/auth/register", data)
+      .then((res) => console.log({ res }))
+      .catch(console.log);
+  };
+
   return (
     <>
       <div className="container mx-auto px-4 h-full">
@@ -39,7 +60,7 @@ export default function Register() {
                 <div className="text-blueGray-400 text-center mb-3 font-bold">
                   <small>Or sign up with credentials</small>
                 </div>
-                <form>
+                <form onSubmit={handleSubmit(onSubmit)}>
                   <div className="relative w-full mb-3">
                     <label
                       className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
@@ -48,10 +69,14 @@ export default function Register() {
                       Name
                     </label>
                     <input
-                      type="email"
+                      type="text"
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="Name"
+                      {...register("name")}
                     />
+                    <span className="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
+                      {errors.name?.message}
+                    </span>
                   </div>
 
                   <div className="relative w-full mb-3">
@@ -63,10 +88,15 @@ export default function Register() {
                     </label>
                     <input
                       type="email"
+                      // autoComplete="off"
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="Email"
+                      {...register("email")}
                     />
                   </div>
+                  <span className="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
+                    {errors.email?.message}
+                  </span>
 
                   <div className="relative w-full mb-3">
                     <label
@@ -79,7 +109,11 @@ export default function Register() {
                       type="password"
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="Password"
+                      {...register("password")}
                     />
+                    <span className="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
+                      {errors.password?.message}
+                    </span>
                   </div>
 
                   <div>
@@ -105,7 +139,7 @@ export default function Register() {
                   <div className="text-center mt-6">
                     <button
                       className="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
-                      type="button"
+                      type="submit"
                     >
                       Create Account
                     </button>

@@ -1,51 +1,165 @@
 /* eslint-disable react/jsx-no-target-blank */
-import React from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
-
+import { yupResolver } from "@hookform/resolvers/yup";
 import IndexNavbar from "components/Navbars/IndexNavbar.js";
 import Footer from "components/Footers/Footer.js";
+import { signInform } from "site-constant";
+import { useForm } from "react-hook-form";
+import axios from "axios";
 
 export default function Index() {
+  const { schema } = signInform;
+  const {
+    handleSubmit,
+    formState: { errors },
+    register,
+  } = useForm({
+    mode: "all",
+    resolver: yupResolver(schema),
+  });
+
+  useEffect(() => {
+    axios
+      .get("/api/auth/register")
+      .then((res) => console.log({ res }))
+      .catch(console.log);
+  });
+
+  const onSubmit = (data) => console.log(data);
+
   return (
     <>
       <IndexNavbar fixed />
       <section className="header relative pt-16 items-center flex h-screen max-h-860-px">
         <div className="container mx-auto items-center flex flex-wrap">
-          <div className="w-full md:w-8/12 lg:w-6/12 xl:w-6/12 px-4">
+          <div className="w-full md:w-8/12 px-4">
             <div className="pt-32 sm:pt-0">
-              <h2 className="font-semibold text-4xl text-blueGray-600">
-                Notus NextJS - A beautiful extension for Tailwind CSS.
-              </h2>
-              <p className="mt-4 text-lg leading-relaxed text-blueGray-500">
-                Notus NextJS is Free and Open Source. It does not change any of
-                the CSS from{" "}
-                <a
-                  href="https://tailwindcss.com/?ref=creativetim"
-                  className="text-blueGray-600"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Tailwind CSS
-                </a>
-                . It features multiple HTML elements and it comes with dynamic
-                components for ReactJS, Vue and Angular.
-              </p>
-              <div className="mt-12">
-                <a
-                  href="https://www.creative-tim.com/learning-lab/tailwind/nextjs/overview/notus?ref=nnjs-index"
-                  target="_blank"
-                  className="get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-blueGray-400 active:bg-blueGray-500 uppercase text-sm shadow hover:shadow-lg ease-linear transition-all duration-150"
-                >
-                  Get started
-                </a>
-                <a
-                  href="https://github.com/creativetimofficial/notus-nextjs?ref=nnjs-index"
-                  className="github-star ml-1 text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-blueGray-700 active:bg-blueGray-600 uppercase text-sm shadow hover:shadow-lg"
-                  target="_blank"
-                >
-                  Github Star
-                </a>
-              </div>
+              <>
+                <div className="container mx-auto px-4 h-full">
+                  <div className="flex content-center items-center justify-center h-full">
+                    <div className="w-full px-4">
+                      <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-200 border-0">
+                        <div className="rounded-t mb-0 px-6 py-6">
+                          <div className="text-center mb-3">
+                            <h6 className="text-blueGray-500 text-sm font-bold">
+                              Sign in with
+                            </h6>
+                          </div>
+                          <div className="btn-wrapper text-center">
+                            <button
+                              className="bg-white active:bg-blueGray-50 text-blueGray-700 font-normal px-4 py-2 rounded outline-none focus:outline-none mr-2 mb-1 uppercase shadow hover:shadow-md inline-flex items-center font-bold text-xs ease-linear transition-all duration-150"
+                              type="button"
+                            >
+                              <img
+                                alt="..."
+                                className="w-5 mr-1"
+                                src="/img/github.svg"
+                              />
+                              Github
+                            </button>
+                            <button
+                              className="bg-white active:bg-blueGray-50 text-blueGray-700 font-normal px-4 py-2 rounded outline-none focus:outline-none mr-1 mb-1 uppercase shadow hover:shadow-md inline-flex items-center font-bold text-xs ease-linear transition-all duration-150"
+                              type="button"
+                            >
+                              <img
+                                alt="..."
+                                className="w-5 mr-1"
+                                src="/img/google.svg"
+                              />
+                              Google
+                            </button>
+                          </div>
+                          <hr className="mt-6 border-b-1 border-blueGray-300" />
+                        </div>
+                        <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
+                          <div className="text-blueGray-400 text-center mb-3 font-bold">
+                            <small>Or sign in with credentials</small>
+                          </div>
+                          <form onSubmit={handleSubmit(onSubmit)}>
+                            <div className="relative w-full mb-3">
+                              <label
+                                className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                htmlFor="grid-password"
+                              >
+                                Email
+                              </label>
+                              <input
+                                type="email"
+                                className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                placeholder="Email"
+                                {...register("email")}
+                              />
+                              <span className="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
+                                {errors.email?.message}
+                              </span>
+                            </div>
+
+                            <div className="relative w-full mb-3">
+                              <label
+                                className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                htmlFor="grid-password"
+                              >
+                                Password
+                              </label>
+                              <input
+                                type="password"
+                                className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                placeholder="Password"
+                                {...register("password")}
+                              />
+                              <span className="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
+                                {errors.password?.message}
+                              </span>{" "}
+                            </div>
+                            <div>
+                              <label className="inline-flex items-center cursor-pointer">
+                                <input
+                                  id="customCheckLogin"
+                                  type="checkbox"
+                                  className="form-checkbox border-0 rounded text-blueGray-700 ml-1 w-5 h-5 ease-linear transition-all duration-150"
+                                />
+                                <span className="ml-2 text-sm font-semibold text-blueGray-600">
+                                  Remember me
+                                </span>
+                              </label>
+                            </div>
+
+                            <div className="text-center mt-6">
+                              <button
+                                className="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
+                                type="submit"
+                              >
+                                Sign In
+                              </button>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                      <div className="flex flex-wrap mt-6 relative">
+                        <div className="w-1/2">
+                          <a
+                            href="#pablo"
+                            onClick={(e) => e.preventDefault()}
+                            className="text-blueGray-200"
+                          >
+                            <small>Forgot password?</small>
+                          </a>
+                        </div>
+                        <div className="w-1/2 text-right">
+                          <Link href="/auth/register">
+                            <a href="#pablo" className="text-blueGray-200">
+                              <Link href={"/auth/register"}>
+                                <a>Create new account</a>
+                              </Link>{" "}
+                            </a>
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </>
             </div>
           </div>
         </div>
