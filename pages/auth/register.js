@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 // layout for page
 
@@ -7,28 +7,46 @@ import { registerForm } from "site-constant";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
+import Toast from "components/Toast/Toast";
+import router from "next/router";
 
 export default function Register() {
   const { schema } = registerForm;
+  const [isLoading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
   const {
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid, isDirty },
     register,
+    setError,
   } = useForm({
-    mode: "all",
+    mode: "onChange",
     resolver: yupResolver(schema),
   });
 
   const onSubmit = (data) => {
+    setLoading(true);
     axios
       .post("/api/auth/register", data)
-      .then((res) => console.log({ res }))
-      .catch(console.log);
+      .then((res) => {
+        setLoading(false);
+        setSuccess(true);
+        setTimeout(() => router.push("/"), 4000);
+      })
+      .catch((err) => {
+        setLoading(false);
+        err?.response.status === 422 &&
+          setError("email", {
+            type: "server",
+            message: "Email already Exist",
+          });
+      });
   };
 
   return (
     <>
       <div className="container mx-auto px-4 h-full">
+        {success && <Toast />}
         <div className="flex content-center items-center justify-center h-full">
           <div className="w-full lg:w-6/12 px-4">
             <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-200 border-0">
@@ -138,10 +156,11 @@ export default function Register() {
 
                   <div className="text-center mt-6">
                     <button
+                      disabled={!isDirty || !isValid}
                       className="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                       type="submit"
                     >
-                      Create Account
+                      {isLoading ? "Creating..." : "Create Account"}
                     </button>
                   </div>
                 </form>

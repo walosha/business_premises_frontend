@@ -31,7 +31,12 @@ async function signUp(req, res) {
       var usercreated = await user.save();
       return res.status(200).send(usercreated);
     } catch (error) {
-      return res.status(500).send(error.message);
+      if (error.name === "MongoServerError" && error.code === 11000) {
+        return res
+          .status(422)
+          .send({ success: "false", message: "Email already exist !" });
+      }
+      return res.status(500).send(error.code);
     }
   } else {
     res.status(422).send("data_incomplete");

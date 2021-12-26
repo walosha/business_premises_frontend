@@ -19,12 +19,12 @@ export default function Index() {
     resolver: yupResolver(schema),
   });
 
-  useEffect(() => {
-    axios
-      .get("/api/auth/register")
-      .then((res) => console.log({ res }))
-      .catch(console.log);
-  });
+  // useEffect(() => {
+  //   axios
+  //     .get("/api/auth/register")
+  //     .then((res) => console.log({ res }))
+  //     .catch(console.log);
+  // });
 
   const onSubmit = (data) => console.log(data);
 
@@ -150,7 +150,7 @@ export default function Index() {
                           <Link href="/auth/register">
                             <a href="#pablo" className="text-blueGray-200">
                               <Link href={"/auth/register"}>
-                                <a>Create new account</a>
+                                Create new account
                               </Link>{" "}
                             </a>
                           </Link>
