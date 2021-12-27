@@ -1,32 +1,48 @@
 /* eslint-disable react/jsx-no-target-blank */
-import React, { useEffect } from "react";
+import React, { useState } from "react";
+import axios from "axios";
 import Link from "next/link";
 import { yupResolver } from "@hookform/resolvers/yup";
 import IndexNavbar from "components/Navbars/IndexNavbar.js";
 import Footer from "components/Footers/Footer.js";
 import { signInform } from "site-constant";
 import { useForm } from "react-hook-form";
-import axios from "axios";
+import router from "next/router";
 
 export default function Index() {
+  const [isLoading, setLoading] = useState(false);
   const { schema } = signInform;
   const {
     handleSubmit,
     formState: { errors },
     register,
+    setError,
   } = useForm({
     mode: "all",
     resolver: yupResolver(schema),
   });
 
-  // useEffect(() => {
-  //   axios
-  //     .get("/api/auth/register")
-  //     .then((res) => console.log({ res }))
-  //     .catch(console.log);
-  // });
-
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    setLoading(true);
+    axios
+      .post("/api/auth/signIn", data)
+      .then((res) => {
+        setLoading(false);
+        // setSuccess(true);
+        if (res.status === 200) {
+          localStorage.setItem("token", res.data.token);
+          return setTimeout(() => router.push("/admin/dashboard"), 4000);
+        }
+      })
+      .catch((err) => {
+        setLoading(false);
+        err?.response.status === 401 &&
+          setError("password", {
+            type: "server",
+            message: err.response.data.message,
+          });
+      });
+  };
 
   return (
     <>
@@ -130,7 +146,7 @@ export default function Index() {
                                 className="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                                 type="submit"
                               >
-                                Sign In
+                                {isLoading ? "Please wait..." : "Sign In"}
                               </button>
                             </div>
                           </form>

@@ -7,7 +7,6 @@ function userHandler(req, res) {
 
   switch (method) {
     case "POST":
-      // Update or create data in your database
       signUp(req, res);
       break;
     default:
@@ -36,11 +35,11 @@ async function signUp(req, res) {
           .status(422)
           .send({ success: "false", message: "Email already exist !" });
       }
-      return res.status(500).send(error.code);
+      return res.status(500).send(error.message);
     }
   } else {
     res.status(422).send("data_incomplete");
   }
 }
 
-export default connectDB(userHandler);
+module.exports = connectDB(userHandler);

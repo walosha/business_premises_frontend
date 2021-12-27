@@ -7,8 +7,9 @@ import MapExample from "components/Maps/MapExample.js";
 // layout for page
 
 import Admin from "layouts/Admin.js";
+import withAuth from "lib/Hoc/withAuth";
 
-export default function Maps() {
+function Maps() {
   return (
     <>
       <div className="flex flex-wrap">
@@ -22,4 +23,12 @@ export default function Maps() {
   );
 }
 
-Maps.layout = Admin;
+function AdminMaps() {
+  return (
+    <Admin>
+      <Maps />
+    </Admin>
+  );
+}
+
+export default withAuth(AdminMaps);

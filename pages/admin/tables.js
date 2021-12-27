@@ -7,8 +7,9 @@ import CardTable from "components/Cards/CardTable.js";
 // layout for page
 
 import Admin from "layouts/Admin.js";
+import withAuth from "lib/Hoc/withAuth";
 
-export default function Tables() {
+function Tables() {
   return (
     <>
       <div className="flex flex-wrap mt-4">
@@ -23,4 +24,12 @@ export default function Tables() {
   );
 }
 
-Tables.layout = Admin;
+function AdminTables() {
+  return (
+    <Admin>
+      <Tables />
+    </Admin>
+  );
+}
+
+export default withAuth(AdminTables);

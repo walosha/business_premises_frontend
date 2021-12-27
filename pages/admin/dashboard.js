@@ -10,8 +10,9 @@ import CardSocialTraffic from "components/Cards/CardSocialTraffic.js";
 // layout for page
 
 import Admin from "layouts/Admin.js";
+import withAuth from "lib/Hoc/withAuth";
 
-export default function Dashboard() {
+function Dashboard() {
   return (
     <>
       <div className="flex flex-wrap">
@@ -34,4 +35,12 @@ export default function Dashboard() {
   );
 }
 
-Dashboard.layout = Admin;
+function AdminDashboard() {
+  return (
+    <Admin>
+      <Dashboard />
+    </Admin>
+  );
+}
+
+export default withAuth(AdminDashboard);

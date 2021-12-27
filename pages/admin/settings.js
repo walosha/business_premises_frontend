@@ -8,8 +8,9 @@ import CardProfile from "components/Cards/CardProfile.js";
 // layout for page
 
 import Admin from "layouts/Admin.js";
+import withAuth from "lib/Hoc/withAuth";
 
-export default function Settings() {
+function Settings() {
   return (
     <>
       <div className="flex flex-wrap">
@@ -24,4 +25,11 @@ export default function Settings() {
   );
 }
 
-Settings.layout = Admin;
+function AdminSettings() {
+  return (
+    <Admin>
+      <Settings />
+    </Admin>
+  );
+}
+export default withAuth(AdminSettings);
