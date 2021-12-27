@@ -8,7 +8,6 @@ export const signToken = (id) => {
 };
 
 export async function verifyToken(token) {
-  console.log({ secret: process.env.NEXT_PUBLIC_JWT_SECRET });
   try {
     return await promisify(jwt.verify)(
       token,

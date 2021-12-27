@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-no-target-blank */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -7,10 +7,12 @@ import IndexNavbar from "components/Navbars/IndexNavbar.js";
 import Footer from "components/Footers/Footer.js";
 import { signInform } from "site-constant";
 import { useForm } from "react-hook-form";
-import router from "next/router";
+import { useRouter } from "next/router";
+import withAuth from "lib/Hoc/withAuth";
 
-export default function Index() {
+function Index() {
   const [isLoading, setLoading] = useState(false);
+  const Router = useRouter();
   const { schema } = signInform;
   const {
     handleSubmit,
@@ -31,7 +33,7 @@ export default function Index() {
         // setSuccess(true);
         if (res.status === 200) {
           localStorage.setItem("token", res.data.token);
-          return setTimeout(() => router.push("/admin/dashboard"), 4000);
+          return setTimeout(() => Router.push("/admin/dashboard"), 4000);
         }
       })
       .catch((err) => {
@@ -795,3 +797,5 @@ export default function Index() {
     </>
   );
 }
+
+export default Index;
