@@ -13,6 +13,10 @@ export const registerForm = {
     name: Yup.string().required(),
     email: Yup.string().email("Invalid email format").required(),
     password: Yup.string().required(),
+    confirmPpassword: Yup.string().oneOf(
+      [Yup.ref("password"), null],
+      "Passwords must match"
+    ),
   }),
 };
 

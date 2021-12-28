@@ -115,6 +115,23 @@ export default function Register() {
                       {errors.password?.message}
                     </span>
                   </div>
+                  <div className="relative w-full mb-3">
+                    <label
+                      className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                      htmlFor="grid-password"
+                    >
+                      Confirm Password
+                    </label>
+                    <input
+                      type="password"
+                      className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                      placeholder="Password"
+                      {...register("confirmPpassword")}
+                    />
+                    <span className="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
+                      {errors.confirmPpassword?.message}
+                    </span>
+                  </div>
 
                   <div>
                     <label className="inline-flex items-center cursor-pointer">
