@@ -3,6 +3,17 @@ import connectDB from "lib/mongodb";
 import { signToken } from "utils/generateToken";
 const bcrypt = require("bcrypt");
 
+// Country.create(countries)
+//   .then((user) => {
+//     console.log(`${user.length} users created`);
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   })
+//   .finally(() => {
+//     // mongoose.connection.close();
+//   });
+
 function userHandler(req, res) {
   const { method } = req;
   switch (method) {
@@ -24,7 +35,7 @@ async function signIn(req, res) {
       const user = await User.findOne({ email }).select("+password");
 
       if (!user) {
-        return res.status(200).json({ message: "User or password incorrect!" });
+        return res.status(401).json({ message: "User or password incorrect!" });
       }
       var isPasswordSame = await bcrypt.compareSync(password, user.password);
 
