@@ -57,7 +57,9 @@ async function signIn(req, res) {
       return res.status(500).send(error.message);
     }
   } else {
-    res.status(400).json({ message: "Please provide email and password!" });
+    return res
+      .status(400)
+      .json({ message: "Please provide email and password!" });
   }
 }
 
