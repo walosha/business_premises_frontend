@@ -4,10 +4,11 @@ import { useForm } from "react-hook-form";
 import { registerBusinessForm } from "site-constant";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/router";
+import withInterceptor from "lib/Hoc/interceptor";
 
 // components
 
-export default function CardSettings() {
+function CardSettings() {
   const [industries, setIndustries] = useState([]);
   const [countries, setCountries] = useState([]);
   const [isLoading, setLoading] = useState(false);
@@ -47,6 +48,10 @@ export default function CardSettings() {
         router.reload(window.location.pathname);
       })
       .catch((err) => {
+        if (err?.response?.status === 401) {
+          localStorage.removeItem("token");
+          router.push("/");
+        }
         setLoading(false);
         err?.response?.status === 422 &&
           setError("reg_no", {
@@ -358,3 +363,5 @@ export default function CardSettings() {
     </>
   );
 }
+
+export default CardSettings;

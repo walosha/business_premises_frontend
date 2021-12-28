@@ -1,8 +1,18 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import UserDropdown from "components/Dropdowns/UserDropdown.js";
+import axios from "axios";
 
 export default function Navbar() {
+  const [user, setUser] = useState(0);
+  useEffect(() => {
+    axios
+      .get("/api/users/me")
+      .then((response) => {
+        setUser(response.data.data);
+      })
+      .catch(console.log);
+  }, []);
   return (
     <>
       {/* Navbar */}
@@ -10,12 +20,16 @@ export default function Navbar() {
         <div className="w-full mx-autp items-center flex justify-between md:flex-nowrap flex-wrap md:px-10 px-4">
           {/* Brand */}
           <a
-            className="text-white text-sm uppercase hidden lg:inline-block font-semibold"
+            className="text-white text-sm uppercase hidden lg:inline-block mr-4 font-semibold"
             href="#pablo"
             onClick={(e) => e.preventDefault()}
           >
             Dashboard
           </a>
+
+          <p className="text-white text-sm uppercase hidden lg:inline-block font-semibold">
+            Welcome, {user.name}
+          </p>
           {/* Form */}
           <form className="md:flex hidden flex-row flex-wrap items-center lg:ml-auto mr-3">
             <div className="relative flex w-full flex-wrap items-stretch">

@@ -1,10 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 // components
 
 import CardStats from "components/Cards/CardStats.js";
+import axios from "axios";
 
 export default function HeaderStats() {
+  const [businessesCount, setBusinessCount] = useState(0);
+  useEffect(() => {
+    const businesses = axios.get("/api/businesses");
+    axios
+      .all([businesses])
+      .then((response) => {
+        const [businesses] = response;
+        setBusinessCount(businesses.data.data);
+      })
+      .catch(console.log);
+  }, []);
   return (
     <>
       {/* Header */}
@@ -16,7 +28,7 @@ export default function HeaderStats() {
               <div className="w-full lg:w-6/12 xl:w-4/12 px-4">
                 <CardStats
                   statSubtitle="Total Businesses Captured"
-                  statTitle="35,897"
+                  statTitle={businessesCount}
                   statArrow="up"
                   statPercent="3.48"
                   statPercentColor="text-emerald-500"

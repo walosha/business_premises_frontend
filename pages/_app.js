@@ -9,6 +9,7 @@ import PageChange from "components/PageChange/PageChange.js";
 
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "styles/tailwind.css";
+import axios from "axios";
 
 Router.events.on("routeChangeStart", (url) => {
   console.log(`Loading: ${url}`);
@@ -28,6 +29,10 @@ Router.events.on("routeChangeError", () => {
 
 export default class MyApp extends App {
   componentDidMount() {
+    const token = localStorage.getItem("token");
+    if (token)
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
     let comment = document.createComment(`
 =========================================================
 Business Premises

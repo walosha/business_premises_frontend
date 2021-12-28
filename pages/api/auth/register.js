@@ -25,6 +25,7 @@ async function signUp(req, res) {
         name,
         email,
         password: passwordhash,
+        role: "user",
       });
       // Create new user
       var usercreated = await user.save();
@@ -38,7 +39,7 @@ async function signUp(req, res) {
       return res.status(500).send(error.message);
     }
   } else {
-    res.status(422).send("data_incomplete");
+    res.status(422).send({ success: "false", message: "data_incomplete" });
   }
 }
 

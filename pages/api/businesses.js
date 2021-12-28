@@ -1,3 +1,4 @@
+import withProtect from "lib/middlewares/withProtect";
 import Business from "lib/models/Businesses";
 import connectDB from "lib/mongodb";
 
@@ -8,6 +9,10 @@ async function userHandler(req, res) {
     case "POST":
       // Update or create data in your database
       registerBusiness(req, res);
+      break;
+    case "GET":
+      // Update or create data in your database
+      getAllBusinesses(req, res);
       break;
     default:
       res.setHeader("Allow", ["GET", "POST"]);
@@ -26,6 +31,7 @@ async function registerBusiness(req, res) {
           message: "Business already register on the platform !",
         });
       }
+      req.body.user = req.user;
       business = await Business.create(req.body);
       return res.status(200).json({ success: true, data: business });
     } catch (error) {
@@ -41,4 +47,13 @@ async function registerBusiness(req, res) {
   }
 }
 
-module.exports = connectDB(userHandler);
+async function getAllBusinesses(_, res) {
+  try {
+    let businessesCount = await Business.count({});
+    return res.status(200).json({ success: true, data: businessesCount });
+  } catch (error) {
+    return res.status(500).send(error.message);
+  }
+}
+
+module.exports = connectDB(withProtect(userHandler));

@@ -41,7 +41,9 @@ function Index() {
         setLoading(false);
         // setSuccess(true);
         if (res.status === 200) {
-          localStorage.setItem("token", res.data.token);
+          const { token } = res.data;
+          localStorage.setItem("token", token);
+          axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
           return setTimeout(() => Router.push("/admin/dashboard"), 4000);
         }
       })
