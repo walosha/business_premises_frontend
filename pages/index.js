@@ -8,12 +8,20 @@ import Footer from "components/Footers/Footer.js";
 import { signInform } from "site-constant";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
-import withAuth from "lib/Hoc/withAuth";
 
 function Index() {
   const [isLoading, setLoading] = useState(false);
   const Router = useRouter();
   const { schema } = signInform;
+  const router = useRouter();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      router.push("/admin/dashboard");
+    }
+  }, []);
+
   const {
     handleSubmit,
     formState: { errors, isDirty, isValid },
