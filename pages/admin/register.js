@@ -11,7 +11,7 @@ import { Page } from "components/Helmet/Helmet";
 
 function Settings() {
   return (
-    <Page title={"Register Business"}>
+    <Page title={"Business Registration"}>
       <div className="flex flex-wrap">
         <div className="w-full lg:w-12/12 px-4">
           <CardSettings />
