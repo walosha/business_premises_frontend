@@ -21,8 +21,8 @@ async function userHandler(req, res) {
 }
 
 async function registerBusiness(req, res) {
+  console.log(req.body);
   if (req.body.reg_no) {
-    console.log("inside", req.body.reg_no);
     try {
       let business = await Business.findOne({ reg_no: req.body.req_no });
       if (business) {

@@ -12,10 +12,11 @@ import CardSocialTraffic from "components/Cards/CardSocialTraffic.js";
 import Admin from "layouts/Admin.js";
 import withAuth from "lib/Hoc/withAuth";
 import HeaderStats from "components/Headers/HeaderStats";
+import { Page } from "components/Helmet/Helmet";
 
 function Dashboard() {
   return (
-    <>
+    <Page title={"Dashbaord"}>
       <div className="flex flex-wrap mt-24">
         <div className="w-full xl:w-8/12 mb-12 xl:mb-0 px-4">
           <CardLineChart />
@@ -32,7 +33,7 @@ function Dashboard() {
           <CardSocialTraffic />
         </div>
       </div> */}
-    </>
+    </Page>
   );
 }
 

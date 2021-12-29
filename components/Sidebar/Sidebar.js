@@ -110,12 +110,12 @@ export default function Sidebar() {
                 </Link>
               </li>
               <li className="items-center">
-                <Link href="/admin/settings">
+                <Link href="/admin/register">
                   <a
                     href="#pablo"
                     className={
                       "text-xs uppercase py-3 font-bold block " +
-                      (router.pathname.indexOf("/admin/settings") !== -1
+                      (router.pathname.indexOf("/admin/register") !== -1
                         ? "text-lightBlue-500 hover:text-lightBlue-600"
                         : "text-blueGray-700 hover:text-blueGray-500")
                     }
@@ -123,7 +123,7 @@ export default function Sidebar() {
                     <i
                       className={
                         "fas fa-tools mr-2 text-sm " +
-                        (router.pathname.indexOf("/admin/settings") !== -1
+                        (router.pathname.indexOf("/admin/register") !== -1
                           ? "opacity-75"
                           : "text-blueGray-300")
                       }
@@ -133,12 +133,12 @@ export default function Sidebar() {
                 </Link>
               </li>
               <li className="items-center">
-                <Link href="/admin/tables">
+                <Link href="/admin/generate_bill">
                   <a
                     href="#pablo"
                     className={
                       "text-xs uppercase py-3 font-bold block " +
-                      (router.pathname.indexOf("/admin/tables") !== -1
+                      (router.pathname.indexOf("/admin/generate_bill") !== -1
                         ? "text-lightBlue-500 hover:text-lightBlue-600"
                         : "text-blueGray-700 hover:text-blueGray-500")
                     }
@@ -146,7 +146,7 @@ export default function Sidebar() {
                     <i
                       className={
                         "fas fa-table mr-2 text-sm " +
-                        (router.pathname.indexOf("/admin/tables") !== -1
+                        (router.pathname.indexOf("/admin/generate_bill") !== -1
                           ? "opacity-75"
                           : "text-blueGray-300")
                       }
@@ -156,12 +156,12 @@ export default function Sidebar() {
                 </Link>
               </li>
               <li className="items-center">
-                <Link href="/admin/tables">
+                <Link href="/admin/payment">
                   <a
                     href="#pablo"
                     className={
                       "text-xs uppercase py-3 font-bold block " +
-                      (router.pathname.indexOf("/admin/tables") !== -1
+                      (router.pathname.indexOf("/admin/payment") !== -1
                         ? "text-lightBlue-500 hover:text-lightBlue-600"
                         : "text-blueGray-700 hover:text-blueGray-500")
                     }
@@ -169,7 +169,7 @@ export default function Sidebar() {
                     <i
                       className={
                         "fas fa-table mr-2 text-sm " +
-                        (router.pathname.indexOf("/admin/tables") !== -1
+                        (router.pathname.indexOf("/admin/payment") !== -1
                           ? "opacity-75"
                           : "text-blueGray-300")
                       }
@@ -202,12 +202,12 @@ export default function Sidebar() {
                 </Link>
               </li>{" "}
               <li className="items-center">
-                <Link href="/admin/maps">
+                <Link href="/admin/set_up">
                   <a
                     href="#pablo"
                     className={
                       "text-xs uppercase py-3 font-bold block " +
-                      (router.pathname.indexOf("/admin/maps") !== -1
+                      (router.pathname.indexOf("/admin/set_up") !== -1
                         ? "text-lightBlue-500 hover:text-lightBlue-600"
                         : "text-blueGray-700 hover:text-blueGray-500")
                     }
@@ -215,12 +215,12 @@ export default function Sidebar() {
                     <i
                       className={
                         "fas fa-map-marked mr-2 text-sm " +
-                        (router.pathname.indexOf("/admin/maps") !== -1
+                        (router.pathname.indexOf("/admin/set_up") !== -1
                           ? "opacity-75"
                           : "text-blueGray-300")
                       }
                     ></i>{" "}
-                    Account
+                    Set-Up
                   </a>
                 </Link>
               </li>
