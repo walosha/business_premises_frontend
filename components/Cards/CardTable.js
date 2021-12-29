@@ -132,16 +132,22 @@ export default function CardTable({ color, data }) {
             </thead>
             <tbody>
               {data.map(
-                ({
-                  business_type,
-                  name,
-                  user,
-                  lga,
-                  state,
-                  country,
-                  created_at,
-                }) => (
+                (
+                  {
+                    business_type,
+                    name,
+                    user,
+                    lga,
+                    state,
+                    country,
+                    created_at,
+                  },
+                  index
+                ) => (
                   <tr>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      {index + 1}{" "}
+                    </td>
                     <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
                       <span
                         className={
