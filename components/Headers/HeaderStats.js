@@ -8,7 +8,7 @@ import axios from "axios";
 export default function HeaderStats() {
   const [businessesCount, setBusinessCount] = useState(0);
   useEffect(() => {
-    const businesses = axios.get("/api/businesses");
+    const businesses = axios.get("/api/businesses/count");
     axios
       .all([businesses])
       .then((response) => {

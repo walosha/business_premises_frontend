@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { registerBusinessForm } from "site-constant";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/router";
-import withInterceptor from "lib/Hoc/interceptor";
+import NaijaStates from "naija-state-local-government";
 
 // components
 
@@ -20,6 +20,7 @@ function CardSettings() {
     formState: { errors, isDirty, isValid },
     register,
     setError,
+    watch,
   } = useForm({
     mode: "all",
     resolver: yupResolver(schema),
@@ -60,8 +61,7 @@ function CardSettings() {
           });
       });
   };
-  console.log({ errors });
-
+  console.log(NaijaStates.lgas("Oyo"));
   return (
     <>
       <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-100 border-0">
@@ -231,7 +231,7 @@ function CardSettings() {
                         select Owner Structure
                       </option>
                       <option value="1">Sole Proprietorship</option>
-                      <option value="2">Partnersgip</option>
+                      <option value="2">Partnership</option>
                       <option value="3">Private Limited Company</option>
                       <option value="4">Public Limited Company</option>
                       <option value="5">Company Limited by Guarantee</option>
@@ -263,33 +263,6 @@ function CardSettings() {
                     {errors.address?.message}
                   </span>
                 </div>
-              </div>
-              <div className="w-full lg:w-6/12 px-4">
-                <div className="relative w-full mb-3">
-                  <label
-                    className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                    htmlFor="grid-password"
-                  >
-                    Select Location/LGA
-                  </label>
-                  <div class="mb-3 xl:w-96">
-                    <select
-                      {...register("lga")}
-                      class="form-select appearance-none block rounded w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 transition  ease-in-out  m-0      focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                      aria-label="Default select example"
-                    >
-                      <option value="" selected hidden>
-                        select LGA
-                      </option>
-                      <option value="1">One</option>
-                      <option value="2">Two</option>
-                      <option value="3">Three</option>
-                    </select>
-                    <span className="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
-                      {errors.lga?.message}
-                    </span>
-                  </div>
-                </div>
               </div>{" "}
               <div className="w-full lg:w-6/12 px-4">
                 <div className="relative w-full mb-3">
@@ -308,9 +281,9 @@ function CardSettings() {
                       <option value="" selected hidden>
                         select State
                       </option>
-                      <option value="1">One</option>
-                      <option value="2">Two</option>
-                      <option value="3">Three</option>
+                      {NaijaStates.states().map((state) => (
+                        <option value={state}>{state}</option>
+                      ))}
                     </select>
                     <span className="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
                       {errors.state?.message}
@@ -318,6 +291,35 @@ function CardSettings() {
                   </div>
                 </div>
               </div>
+              <div className="w-full lg:w-6/12 px-4">
+                <div className="relative w-full mb-3">
+                  <label
+                    className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                    htmlFor="grid-password"
+                  >
+                    Select Location/LGA
+                  </label>
+                  <div class="mb-3 xl:w-96">
+                    <select
+                      {...register("lga")}
+                      class="form-select appearance-none block rounded w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 transition  ease-in-out  m-0      focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                      aria-label="Default select example"
+                    >
+                      <option value="" selected hidden>
+                        select LGA
+                      </option>
+                      {NaijaStates.lgas(
+                        watch("state", false) || "Oyo"
+                      ).lgas.map((state) => (
+                        <option value={state}>{state}</option>
+                      ))}
+                    </select>
+                    <span className="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
+                      {errors.lga?.message}
+                    </span>
+                  </div>
+                </div>
+              </div>{" "}
               <div className="w-full lg:w-6/12 px-4">
                 <div className="relative w-full mb-3">
                   <label

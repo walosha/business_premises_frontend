@@ -49,8 +49,8 @@ async function registerBusiness(req, res) {
 
 async function getAllBusinesses(_, res) {
   try {
-    let businessesCount = await Business.count({});
-    return res.status(200).json({ success: true, data: businessesCount });
+    let businesses = await Business.find({}).populate();
+    return res.status(200).json({ success: true, data: businesses });
   } catch (error) {
     return res.status(500).send(error.message);
   }
