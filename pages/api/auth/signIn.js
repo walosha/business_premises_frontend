@@ -1,6 +1,7 @@
 import User from "lib/models/users";
 import connectDB from "lib/mongodb";
 import { signToken } from "utils/generateToken";
+import cookie from "cookie";
 const bcrypt = require("bcrypt");
 
 // Country.create(countries)
@@ -45,10 +46,19 @@ async function signIn(req, res) {
           .json({ message: "Email or password incorrect!" });
       }
 
-      // Create new user
+      const token = signToken(user._id);
+      // res.cookie("token", token, {
+      //   expires: new Date(
+      //     Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+      //   ),
+      //   httpOnly: true,
+      //   secure: req.secure || req.headers["x-forwarded-proto"] === "https",
+      // });
+
+      // Sign IN user
       return res.status(200).send({
         status: "success",
-        token: signToken(user._id),
+        token,
         data: {
           user,
         },

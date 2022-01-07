@@ -54,6 +54,8 @@ function Index() {
             type: "server",
             message: err.response.data.message,
           });
+        err?.response.status === 500 &&
+          alert("An error occurred. Please contact the admin!");
       });
   };
 

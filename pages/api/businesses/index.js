@@ -21,7 +21,6 @@ async function userHandler(req, res) {
 }
 
 async function registerBusiness(req, res) {
-  console.log(req.body);
   if (req.body.reg_no) {
     try {
       let business = await Business.findOne({ reg_no: req.body.req_no });
@@ -42,9 +41,13 @@ async function registerBusiness(req, res) {
             "Registration number associated with a registered business !",
         });
       }
-      return res.status(500).send(error.message);
+
+      return res.status(500).json({ success: false, data: error.message });
     }
   }
+  return res
+    .status(500)
+    .json({ success: false, data: "Add a registration number" });
 }
 
 async function getAllBusinesses(_, res) {
