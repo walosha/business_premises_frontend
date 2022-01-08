@@ -30,7 +30,6 @@ function CardSettings() {
   });
 
   const id = watch("mda_id", false);
-  console.log({ errors });
 
   useEffect(() => {
     const MDAs = axios.get("/api/data/mdas");
@@ -56,7 +55,6 @@ function CardSettings() {
 
   const onBusinessSearch = useDebounce((e) => {
     const { value } = e.target;
-    console.log(typeof value, "[]]]]]]]]]]]]]]]]", value);
     if (value.length > 9) {
       axios
         .get("/api/businesses/" + value)
@@ -90,7 +88,7 @@ function CardSettings() {
     delete data.address;
 
     axios
-      .post("/api/invoice", data)
+      .post("/api/invoices", data)
       .then((res) => {
         setLoading(false);
         router.reload(window.location.pathname);
@@ -110,14 +108,13 @@ function CardSettings() {
   };
 
   const businesUniqueId = register("business_id", { required: true });
-  console.log(typeof watch("business_id", false));
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-100 border-0">
         <div className="rounded-t bg-white mb-0 px-6 py-6">
           <div className="text-center flex justify-between">
             <h6 className="text-blueGray-700 text-xl font-bold">
-              Business Profile Form
+              Business Profile
             </h6>
           </div>
         </div>
@@ -155,6 +152,7 @@ function CardSettings() {
                 </label>
                 <input
                   {...register("name")}
+                  disabled
                   type="text"
                   className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                 />
@@ -176,9 +174,9 @@ function CardSettings() {
                 <input
                   {...register("address")}
                   type="text"
-                  className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                  className="border-0 px-3 py-3 placeholder-blueGray-300 disabled:opacity-80 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                   defaultValue=""
-                  readOnly
+                  disabled
                 />
                 <span className="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
                   {errors.address?.message}
@@ -194,9 +192,10 @@ function CardSettings() {
                   LGA
                 </label>
                 <input
+                  disabled
                   {...register("lga")}
                   type="text"
-                  className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                  className="border-0  px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                 />
                 <span className="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
                   {errors.owner_name?.message}
@@ -213,6 +212,8 @@ function CardSettings() {
                 </label>
                 <div className="mb-3 xl:w-96">
                   <select
+                    disabled
+                    disabled
                     {...register("state")}
                     className="form-select appearance-none block rounded w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 transition  ease-in-out  m-0      focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                     aria-label="Default select example"
@@ -220,8 +221,10 @@ function CardSettings() {
                     <option value="" defaultValue={"select State"} hidden>
                       select State
                     </option>
-                    {NaijaStates.states().map((state) => (
-                      <option value={state}>{state}</option>
+                    {NaijaStates.states().map((state, idx) => (
+                      <option key={idx} value={state}>
+                        {state}
+                      </option>
                     ))}
                   </select>
                   <span className="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">

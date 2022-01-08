@@ -7,13 +7,16 @@ import axios from "axios";
 
 export default function HeaderStats() {
   const [businessesCount, setBusinessCount] = useState(0);
+  const [invoicesCount, setInvoicesCount] = useState(0);
   useEffect(() => {
     const businesses = axios.get("/api/businesses/count");
+    const invoices = axios.get("/api/invoices/count");
     axios
-      .all([businesses])
+      .all([businesses, invoices])
       .then((response) => {
-        const [businesses] = response;
+        const [businesses, invoices] = response;
         setBusinessCount(businesses.data.data);
+        setInvoicesCount(invoices.data.data);
       })
       .catch(console.log);
   }, []);
@@ -40,7 +43,7 @@ export default function HeaderStats() {
               <div className="w-full lg:w-6/12 xl:w-4/12 px-4">
                 <CardStats
                   statSubtitle="Total Bills Generated"
-                  statTitle="1,056"
+                  statTitle={invoicesCount}
                   statArrow="down"
                   statPercent="3.48"
                   statPercentColor="text-red-500"

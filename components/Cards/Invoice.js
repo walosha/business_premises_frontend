@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 // components
 
 import TableDropdown from "components/Dropdowns/TableDropdown.js";
+import { formatCurrency } from "utils/formatCurrency";
 
 export default function CardTable({ color, data }) {
   function convertToDate(params) {
@@ -50,7 +51,7 @@ export default function CardTable({ color, data }) {
                   (color === "light" ? "text-blueGray-700" : "text-white")
                 }
               >
-                Registered Business{" "}
+                Invoices{" "}
               </h3>
             </div>
           </div>
@@ -179,7 +180,7 @@ export default function CardTable({ color, data }) {
                     </td>
                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                       <i className="fas fa-circle text-orange-500 mr-2"></i>{" "}
-                      {amount}
+                      {formatCurrency(amount)}
                     </td>
                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                       <div className="flex"> {created_by.name} </div>

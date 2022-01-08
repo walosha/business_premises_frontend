@@ -21,7 +21,6 @@ function Maps() {
       .catch(console.log);
   }, []);
 
-  console.log({ invoices });
   return (
     <Page title={"Invoices"}>
       <div className="flex flex-wrap">
