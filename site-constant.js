@@ -38,3 +38,16 @@ export const registerBusinessForm = {
     country: Yup.string().required(),
   }),
 };
+
+export const generateInvoiceForm = {
+  schema: Yup.object({
+    business_id: Yup.string().min(9).required("business_id field is require"),
+    name: Yup.string().required(),
+    address: Yup.string().typeError().required(),
+    lga: Yup.string().required(),
+    state: Yup.string().required(),
+    tax_item_id: Yup.string().required(),
+    mda_id: Yup.string().required(),
+    amount: Yup.number().required(),
+  }),
+};

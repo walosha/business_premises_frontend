@@ -49,12 +49,12 @@ function Index() {
       })
       .catch((err) => {
         setLoading(false);
-        err?.response.status === 401 &&
+        err?.response?.status === 401 &&
           setError("password", {
             type: "server",
             message: err.response.data.message,
           });
-        err?.response.status === 500 &&
+        err?.response?.status === 500 &&
           alert("An error occurred. Please contact the admin!");
       });
   };

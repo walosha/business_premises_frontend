@@ -1,10 +1,12 @@
 import User from "lib/models/users";
 import connectDB from "lib/mongodb";
 import { signToken } from "utils/generateToken";
-import cookie from "cookie";
-const bcrypt = require("bcrypt");
+import bcrypt from "bcrypt";
+// import cookie from "cookie";
+// import TaxItems from "lib/models/taxItems";
+// import { taxItems } from "../../../files/tax_items";
 
-// Country.create(countries)
+// TaxItems.create(taxItems)
 //   .then((user) => {
 //     console.log(`${user.length} users created`);
 //   })
