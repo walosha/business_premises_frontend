@@ -5,10 +5,12 @@ import React, { useEffect, useState } from "react";
 import CardStats from "components/Cards/CardStats.js";
 import axios from "axios";
 import { formatCurrency } from "utils/formatCurrency";
+import { useRouter } from "next/router";
 
 export default function HeaderStats() {
   const [businessesCount, setBusinessCount] = useState(0);
   const [invoicesCount, setInvoicesCount] = useState(0);
+  const router = useRouter();
   useEffect(() => {
     const businesses = axios.get("/api/businesses/count");
     const invoices = axios.get("/api/invoices/count");
@@ -19,7 +21,12 @@ export default function HeaderStats() {
         setBusinessCount(businesses.data.data);
         setInvoicesCount(invoices.data.data[0]);
       })
-      .catch(console.log);
+      .catch((err) => {
+        if (err?.response?.status === 401) {
+          localStorage.removeItem("token");
+          router.push("/");
+        }
+      });
   }, []);
   return (
     <>
