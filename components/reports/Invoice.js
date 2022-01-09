@@ -11,6 +11,7 @@ import BillTo from "./BillTo";
 import InvoiceNo from "./InvoiceNo";
 import InvoiceItemsTable from "./InvoiceItemsTable";
 import InvoiceThankYouMsg from "./InvoiceThankYouMsg";
+import invoice from "files/invoice";
 
 const styles = StyleSheet.create({
   page: {
@@ -43,59 +44,65 @@ const Invoice = ({ invoice }) => (
   </Document>
 );
 
-const InvoiceDoc = ({ invoice }) => (
-  // <BlobProvider document={<Invoice invoice={invoice} />}>
-  //   {({ url, loading, error }) => {
-  //     if (loading) {
-  //       return (
-  //         <div
-  //           style={{
-  //             height: "100vh",
-  //             display: "flex",
-  //             alignItems: "center",
-  //             justifyContent: "center",
-  //           }}
-  //         >
-  //           <h1 style={{ marginLeft: "10px" }}>Generating receipt</h1>
-  //         </div>
-  //       );
-  //     }
+const InvoiceDoc = ({ data, isloading }) => {
+  console.log(data);
+  if (Object.keys(data).length < 1) {
+    return null;
+  }
 
-  //     if (!loading) {
-  //       return (
-  //         <div
-  //           style={{
-  //             display: "flex",
-  //             alignItems: "center",
-  //             justifyContent: "center",
-  //             flexDirection: "column",
-  //           }}
-  //         >
-  //           <div>
-  //             <a style={styles} href={url} download={`payment-receipt.pdf`}>
-  //               DOWNLOAD
-  //             </a>
-  //           </div>
-  //         </div>
-  //       );
-  //     }
-  //     if (error) {
-  //       return <button>Receipt error</button>;
-  //     }
-  //     return null;
-  //   }}
-  // </BlobProvider>
-  <Document>
-    <Page pageNumber={1} size="A4" style={styles.page}>
-      <Image style={styles.logo} src={"/img/pattern_nextjs.png"} />
+  return (
+    // <BlobProvider document={<Invoice invoice={invoice} />}>
+    //   {({ url, loading, error }) => {
+    //     if (loading) {
+    //       return (
+    //         <div
+    //           style={{
+    //             height: "100vh",
+    //             display: "flex",
+    //             alignItems: "center",
+    //             justifyContent: "center",
+    //           }}
+    //         >
+    //           <h1 style={{ marginLeft: "10px" }}>Generating receipt</h1>
+    //         </div>
+    //       );
+    //     }
 
-      <InvoiceTitle title="Invoice" />
-      <InvoiceNo invoice={invoice} />
-      <BillTo invoice={invoice} />
-      <InvoiceItemsTable invoice={invoice} />
-      <InvoiceThankYouMsg />
-    </Page>
-  </Document>
-);
+    //     if (!loading) {
+    //       return (
+    //         <div
+    //           style={{
+    //             display: "flex",
+    //             alignItems: "center",
+    //             justifyContent: "center",
+    //             flexDirection: "column",
+    //           }}
+    //         >
+    //           <div>
+    //             <a style={styles} href={url} download={`payment-receipt.pdf`}>
+    //               DOWNLOAD
+    //             </a>
+    //           </div>
+    //         </div>
+    //       );
+    //     }
+    //     if (error) {
+    //       return <button>Receipt error</button>;
+    //     }
+    //     return null;
+    //   }}
+    // </BlobProvider>
+    <Document>
+      <Page pageNumber={1} size="A4" style={styles.page}>
+        <Image style={styles.logo} src={"/img/pattern_nextjs.png"} />
+        <InvoiceTitle title="Invoice" />
+        <InvoiceNo invoice={data} />
+        <BillTo invoice={data} />
+        <InvoiceItemsTable invoice={data} />
+        <InvoiceThankYouMsg />
+      </Page>
+    </Document>
+  );
+};
 
 export default InvoiceDoc;

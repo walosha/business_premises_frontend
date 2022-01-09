@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 
 import CardStats from "components/Cards/CardStats.js";
 import axios from "axios";
+import { formatCurrency } from "utils/formatCurrency";
 
 export default function HeaderStats() {
   const [businessesCount, setBusinessCount] = useState(0);
@@ -16,7 +17,7 @@ export default function HeaderStats() {
       .then((response) => {
         const [businesses, invoices] = response;
         setBusinessCount(businesses.data.data);
-        setInvoicesCount(invoices.data.data);
+        setInvoicesCount(invoices.data.data[0]);
       })
       .catch(console.log);
   }, []);
@@ -43,7 +44,7 @@ export default function HeaderStats() {
               <div className="w-full lg:w-6/12 xl:w-4/12 px-4">
                 <CardStats
                   statSubtitle="Total Bills Generated"
-                  statTitle={invoicesCount}
+                  statTitle={formatCurrency(invoicesCount?.totalAmount)}
                   statArrow="down"
                   statPercent="3.48"
                   statPercentColor="text-red-500"

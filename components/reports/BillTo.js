@@ -15,10 +15,10 @@ const styles = StyleSheet.create({
 const BillTo = ({ invoice }) => (
   <View style={styles.headerContainer}>
     <Text style={styles.billTo}>Bill To:</Text>
-    <Text>{invoice.company}</Text>
-    <Text>{invoice.address}</Text>
-    <Text>{invoice.phone}</Text>
-    <Text>{invoice.email}</Text>
+    <Text>{invoice.business_id.name}</Text>
+    <Text>{invoice.business_id.address}</Text>
+    {/* <Text>{invoice.business_id.phone || "N/A"}</Text>
+    <Text>{invoice.business_id.email || "N/A"}</Text> */}
   </View>
 );
 

@@ -6,16 +6,18 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/router";
 import NaijaStates from "naija-state-local-government";
 import { useDebounce } from "lib/hooks/useDebounce";
+import Loader from "components/loader/Loader";
 
 // components
 
-function CardSettings() {
+function GenerateBill({ paramsId }) {
   const [mdas, setMdas] = useState([]);
   const [countries, setCountries] = useState([]);
   const [taxItems, setTaxItems] = useState([]);
   const [isLoading, setLoading] = useState(false);
   const { schema } = generateInvoiceForm;
   const router = useRouter();
+  const isEditModde = !!paramsId;
 
   const {
     handleSubmit,
@@ -28,6 +30,30 @@ function CardSettings() {
     mode: "all",
     resolver: yupResolver(schema),
   });
+
+  useEffect(() => {
+    //if in Edit mode fetch the parmas ID and set form with values
+    if (isEditModde) {
+      setLoading(true);
+      axios
+        .get(`/api/invoices?id=${paramsId}`)
+        .then((form) => {
+          const data = form.data?.data || {};
+          reset({
+            ...data,
+            name: data.business_id.name,
+            address: data.business_id.address,
+            lga: data.business_id.lga,
+            state: data.business_id.state,
+            business_id: data.business_id.business_id,
+          });
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, []);
 
   const id = watch("mda_id", false);
 
@@ -81,31 +107,59 @@ function CardSettings() {
 
   const onSubmit = (data) => {
     setLoading(true);
-    delete data.id;
+    delete data.business_id;
     delete data.lga;
     delete data.name;
     delete data.state;
     delete data.address;
-
-    axios
-      .post("/api/invoices", data)
-      .then((res) => {
-        setLoading(false);
-        router.reload(window.location.pathname);
-      })
-      .catch((err) => {
-        if (err?.response?.status === 401) {
-          localStorage.removeItem("token");
-          router.push("/");
-        }
-        setLoading(false);
-        err?.response?.status === 422 &&
-          setError("reg_no", {
-            type: "server",
-            message: err.response.data.message,
+    console.log({ data });
+    // throw new Error();
+    isEditModde
+      ? axios
+          .patch("/api/invoices", data)
+          .then((res) => {
+            setLoading(false);
+            router.reload(window.location.pathname);
+          })
+          .catch((err) => {
+            if (err?.response?.status === 401) {
+              localStorage.removeItem("token");
+              router.push("/");
+            }
+            setLoading(false);
+            err?.response?.status === 422 &&
+              setError("reg_no", {
+                type: "server",
+                message: err.response.data.message,
+              });
+          })
+      : axios
+          .post("/api/invoices", { ...data, business_id: data.id })
+          .then((res) => {
+            setLoading(false);
+            router.reload(window.location.pathname);
+          })
+          .catch((err) => {
+            if (err?.response?.status === 401) {
+              localStorage.removeItem("token");
+              router.push("/");
+            }
+            setLoading(false);
+            err?.response?.status === 422 &&
+              setError("reg_no", {
+                type: "server",
+                message: err.response.data.message,
+              });
           });
-      });
   };
+
+  if (isLoading && isEditModde) {
+    return (
+      <div className="flex justify-center items-center height:100vh">
+        <Loader />
+      </div>
+    );
+  }
 
   const businesUniqueId = register("business_id", { required: true });
   return (
@@ -286,7 +340,7 @@ function CardSettings() {
                   className="form-select appearance-none block rounded w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 transition  ease-in-out  m-0      focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                   aria-label="Default select example"
                 >
-                  <option value="" defaultValue={"select State"} hidden>
+                  <option value="" defaultValue={"select MDA"} hidden>
                     {" "}
                     select MDA
                   </option>
@@ -314,7 +368,7 @@ function CardSettings() {
                   className="form-select appearance-none block rounded w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 transition  ease-in-out  m-0      focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                   aria-label="Default select example"
                 >
-                  <option value="" defaultValue={"select State"} hidden>
+                  <option value="" defaultValue={"select Revenue Item"} hidden>
                     select Revenue Item
                   </option>
                   {taxItems.map(({ title, id }) => (
@@ -382,4 +436,4 @@ function CardSettings() {
   );
 }
 
-export default CardSettings;
+export default GenerateBill;

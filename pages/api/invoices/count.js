@@ -18,7 +18,19 @@ async function userHandler(req, res) {
 
 async function getAllInvoiceesCount(_, res) {
   try {
-    let InvoiceesCount = await Invoice.countDocuments({});
+    let InvoiceesCount = await Invoice.aggregate([
+      {
+        $group: {
+          _id: "",
+          totalAmount: { $sum: "$amount" },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+        },
+      },
+    ]);
     return res.status(200).json({ success: true, data: InvoiceesCount });
   } catch (error) {
     return res.status(500).send(error.message);

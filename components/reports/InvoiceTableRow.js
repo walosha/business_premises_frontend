@@ -27,14 +27,21 @@ const styles = StyleSheet.create({
   },
 });
 
-const InvoiceTableRow = ({ items }) => {
-  const rows = items.map((item) => (
-    <View style={styles.row} key={item.sno.toString()}>
-      <Text style={styles.description}>{item.desc}</Text>
-      <Text style={styles.qty}>{item.qty}</Text>
+const InvoiceTableRow = ({ item }) => (
+  <Fragment>
+    <View style={styles.row}>
+      <Text style={styles.description}>MDA</Text>
+      <Text style={styles.qty}>{item.mda_id}</Text>
     </View>
-  ));
-  return <Fragment>{rows}</Fragment>;
-};
+    <View style={styles.row}>
+      <Text style={styles.description}>Revenue Item</Text>
+      <Text style={styles.qty}>{item.tax_item_id}</Text>
+    </View>
+    <View style={styles.row}>
+      <Text style={styles.description}> Amount</Text>
+      <Text style={styles.qty}>{item.amount}</Text>
+    </View>
+  </Fragment>
+);
 
 export default InvoiceTableRow;

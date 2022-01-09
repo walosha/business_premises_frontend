@@ -1,39 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
 // components
 
-import TableDropdown from "components/Dropdowns/TableDropdown.js";
+import InvoiceDropdown from "components/Dropdowns/InvoiceDropdown.js";
 import { formatCurrency } from "utils/formatCurrency";
+import axios from "axios";
+import Loader from "components/loader/Loader";
+import { convertToDate } from "utils/formatDate";
 
-export default function CardTable({ color, data }) {
-  function convertToDate(params) {
-    if (!params) return "NA";
-    const monthSrting = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
-    let date = new Date(params);
-    let year = date.getFullYear();
-    let month = monthSrting[date.getMonth()];
-    let dt = date.getDate();
+export default function CardTable({ color }) {
+  const [invoices, setInvoices] = useState([]);
+  const [isLoading, setLoading] = useState(false);
+  useEffect(() => {
+    setLoading(true);
+    axios
+      .get("/api/invoices")
+      .then((response) => {
+        setInvoices(response.data.data);
+        setLoading(false);
+      })
+      .catch((err) => setLoading(true));
+  }, []);
 
-    if (dt < 10) {
-      dt = "0" + dt;
-    }
-
-    return `${dt} ${month}, ${year}`;
-  }
   return (
     <>
       <div
@@ -142,7 +131,17 @@ export default function CardTable({ color, data }) {
               </tr>
             </thead>
             <tbody>
-              {data.map(
+              {isLoading && (
+                <tr>
+                  <td
+                    colSpan={"7"}
+                    className="border-t-0 px-6 border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+                  >
+                    <Loader />
+                  </td>{" "}
+                </tr>
+              )}
+              {invoices.map(
                 (
                   {
                     id,
@@ -176,7 +175,7 @@ export default function CardTable({ color, data }) {
                       </span>
                     </th>
                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                      {business_id}{" "}
+                      {business_id.business_id}{" "}
                     </td>
                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                       <i className="fas fa-circle text-orange-500 mr-2"></i>{" "}
@@ -189,7 +188,7 @@ export default function CardTable({ color, data }) {
                       {convertToDate(created_at)}
                     </td>
                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
-                      <TableDropdown />
+                      <InvoiceDropdown route={id} />
                     </td>
                   </tr>
                 )
