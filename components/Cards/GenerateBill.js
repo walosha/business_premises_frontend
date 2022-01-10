@@ -119,7 +119,7 @@ function GenerateBill({ paramsId }) {
           .patch("/api/invoices", data)
           .then((res) => {
             setLoading(false);
-            router.reload(window.location.pathname);
+            router.push("/admin/generate_invoice");
           })
           .catch((err) => {
             if (err?.response?.status === 401) {
