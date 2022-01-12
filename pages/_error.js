@@ -2,11 +2,37 @@ import React, { Component } from "react";
 import Router from "next/router";
 
 export default class _error extends Component {
-  componentDidMount = () => {
-    Router.push("/");
-  };
-
   render() {
-    return <div />;
+    return (
+      <div className="flex items-center justify-center w-screen h-screen">
+        <div className="px-4 lg:py-12">
+          <div className="lg:gap-4 lg:flex">
+            <div className="flex flex-col items-center justify-center md:py-24 lg:py-32">
+              <h1 className="font-bold text-blue-600 text-9xl">404</h1>
+              <p className="mb-2 text-2xl font-bold text-center text-gray-800 md:text-3xl">
+                <span className="text-red-500">Oops!</span> Page not found
+              </p>
+              <p className="mb-8 text-center text-gray-500 md:text-lg">
+                An Error just Occurred! Please bear with us we are fixing it or
+                contact the administrator!
+              </p>
+              <span
+                onClick={() => Router.push("/")}
+                className="px-6 py-2 text-sm font-semibold text-blue-800 bg-blue-100 cursor-pointer"
+              >
+                Go home
+              </span>
+            </div>
+            <div className="mt-4">
+              <img
+                src="https://images.pexels.com/photos/3747139/pexels-photo-3747139.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+                alt="img"
+                className="object-cover w-full h-full"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 }
