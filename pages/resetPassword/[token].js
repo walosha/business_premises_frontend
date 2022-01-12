@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 // layout for page
 
@@ -8,27 +8,45 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import Toast from "components/Toast/Toast";
-import router from "next/router";
-import { fetchValidate } from "pages/api/auth/validate";
+import { useRouter } from "next/router";
 
 export default function Register() {
+  const router = useRouter();
+  const { token } = router.query;
   const { schema } = resetPassword;
   const [isLoading, setLoading] = useState(false);
+  const [isPageLoading, setPageLoading] = useState(true);
   const [success, setSuccess] = useState(false);
   const {
     handleSubmit,
     formState: { errors, isValid, isDirty },
     register,
-    setError,
   } = useForm({
     mode: "onChange",
     resolver: yupResolver(schema),
   });
 
+  useEffect(() => {
+    validateToken();
+  }, []);
+
+  async function validateToken() {
+    try {
+      const data = await axios.get(`/api/auth/validateToken?token=${token}`);
+      if (!(data.status === 200) && !(data.data.status === "success")) {
+        return router.push("/");
+      }
+      setPageLoading(false);
+    } catch (error) {
+      console.log({ error });
+      return router.push("/");
+    }
+  }
+
   const onSubmit = (data) => {
     setLoading(true);
     axios
-      .post("/api/auth/register", data)
+      .post(`/api/auth/resetPassword?token=${token}`, data)
       .then((res) => {
         setLoading(false);
         setSuccess(true);
@@ -36,13 +54,19 @@ export default function Register() {
       })
       .catch((err) => {
         setLoading(false);
-        err?.response.status === 422 &&
-          setError("email", {
-            type: "server",
-            message: "Email already Exist",
-          });
+        console.log({ err });
       });
   };
+
+  if (isPageLoading) {
+    return (
+      <div className="container mx-auto px-4 h-full">
+        <div className="flex content-center items-center justify-center h-full">
+          <h1>Authenticating Token...</h1>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -136,22 +160,6 @@ export default function Register() {
       </div>
     </>
   );
-}
-
-export async function getServerSideProps({ params: { token } }) {
-  await fetchValidate(token);
-
-  const data = { status: "success" };
-
-  if (data?.status === "Success") {
-    return {
-      props: { data: true },
-    };
-  }
-
-  return {
-    props: { data: false },
-  };
 }
 
 Register.layout = Auth;

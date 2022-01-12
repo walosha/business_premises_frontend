@@ -148,7 +148,7 @@ function Index() {
                           </div>
                         </div>
                         <div className="flex flex-wrap mt-6 relative">
-                          <div className="w-1/2 ">
+                          <div className="w-1/2">
                             <Link href="/forget_password">
                               Forgot password?
                             </Link>

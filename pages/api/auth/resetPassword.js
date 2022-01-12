@@ -1,6 +1,7 @@
+const crypto = require("crypto");
 const User = require("lib/models/users");
-const Email = require("utils/email");
 const connectDB = require("lib/mongodb");
+const bcrypt = require("bcrypt");
 
 function userHandler(req, res) {
   const { method } = req;
@@ -16,38 +17,27 @@ function userHandler(req, res) {
 }
 
 async function forgetPassword(req, res) {
-  const { email } = req.body;
-  // 1) Get user based on POSTed email
-  const user = await User.findOne({ email });
-  if (!user) {
-    res
-      .status(422)
-      .send({ success: "false", message: "no user with this email" });
-  }
+  const { password } = req.body;
+  const token = req.query.token;
+  console.log({ password });
+  const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
 
-  // 2) Generate the random reset token
-  const resetToken = user.createPasswordResetToken();
-
-  // 3) Send it to user's email
   try {
-    await user.save({ validateBeforeSave: false });
-    const resetURL = `${req.protocol}://${req.get(
-      "host"
-    )}/api/v1/users/resetPassword/${resetToken}`;
-    await new Email(user, resetURL).sendPasswordReset();
-
-    res.status(200).json({
-      status: "success",
-      message: "Token sent to email!",
+    const user = await User.findOne({
+      passwordResetToken: hashedToken,
     });
-  } catch (err) {
+    user.password = await bcrypt.hash(password, 6);
     user.passwordResetToken = undefined;
     user.passwordResetExpires = undefined;
-    await user.save({ validateBeforeSave: false });
-
+    await user.save();
+    res.status(200).json({
+      status: "success",
+      message: "Password sucessfully reset!",
+    });
+  } catch (err) {
     res.status(500).send({
       success: "false",
-      message: "There was an error sending the email. Try again later!",
+      message: err,
     });
   }
 }

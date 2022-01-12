@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Link from "next/link";
 
 // layout for page
 
@@ -8,9 +9,10 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import Toast from "components/Toast/Toast";
-import router from "next/router";
+import { useRouter } from "next/router";
 
 export default function Register() {
+  const router = useRouter();
   const { schema } = forgetPassword;
   const [isLoading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -29,6 +31,7 @@ export default function Register() {
     axios
       .post("/api/auth/forgetPassword", data)
       .then((res) => {
+        router.reload(window.location.pathname);
         setLoading(false);
         setSuccess(true);
       })
@@ -38,7 +41,7 @@ export default function Register() {
         err?.response.status === 422 &&
           setError("email", {
             type: "server",
-            message: "Email already Exist",
+            message: "Email reset sent if email is valid",
           });
       });
   };
@@ -88,10 +91,18 @@ export default function Register() {
                       } text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150`}
                       type="submit"
                     >
-                      {isLoading ? "Creating..." : "Create Account"}
+                      {isLoading ? "Sending..." : "Send"}
                     </button>
                   </div>
                 </form>
+              </div>
+            </div>
+            <div className="flex flex-wrap mt-6 relative">
+              <div className="w-1/2 ">
+                <Link href="/">Sign In?</Link>
+              </div>
+              <div className="w-1/2 text-right">
+                <Link href="/auth/register">Create new account</Link>
               </div>
             </div>
           </div>

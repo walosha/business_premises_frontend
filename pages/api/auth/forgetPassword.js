@@ -31,8 +31,7 @@ async function forgetPassword(req, res) {
   // 3) Send it to user's email
   try {
     await user.save({ validateBeforeSave: false });
-
-    const resetURL = `http://localhost:3000/resetPassword/${resetToken}`;
+    const resetURL = `${process.env.BASE_URL}/resetPassword/${resetToken}`;
     await new Email(user, resetURL).sendPasswordReset();
     console.log({ email });
 
