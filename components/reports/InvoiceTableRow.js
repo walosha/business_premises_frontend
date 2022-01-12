@@ -1,6 +1,5 @@
 import React, { Fragment } from "react";
 import { Text, View, StyleSheet } from "@react-pdf/renderer";
-import { formatCurrency } from "utils/formatCurrency";
 
 const borderColor = "#90e5fc";
 const styles = StyleSheet.create({
@@ -40,7 +39,7 @@ const InvoiceTableRow = ({ item }) => (
     </View>
     <View style={styles.row}>
       <Text style={styles.description}> Amount</Text>
-      <Text style={styles.qty}>{formatCurrency(item.amount)}</Text>
+      <Text style={styles.qty}>{item.amount}</Text>
     </View>
   </Fragment>
 );

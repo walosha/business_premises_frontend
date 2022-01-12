@@ -148,22 +148,14 @@ function Index() {
                           </div>
                         </div>
                         <div className="flex flex-wrap mt-6 relative">
-                          <div className="w-1/2">
-                            <a
-                              href="#pablo"
-                              onClick={(e) => e.preventDefault()}
-                              className="text-blueGray-200"
-                            >
-                              <small>Forgot password?</small>
-                            </a>
+                          <div className="w-1/2 ">
+                            <Link href="/forget_password">
+                              Forgot password?
+                            </Link>
                           </div>
                           <div className="w-1/2 text-right">
                             <Link href="/auth/register">
-                              <a href="/" className="text-blueGray-200">
-                                <Link href={"/auth/register"}>
-                                  Create new account
-                                </Link>{" "}
-                              </a>
+                              Create new account
                             </Link>
                           </div>
                         </div>

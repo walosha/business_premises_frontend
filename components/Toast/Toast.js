@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Toast() {
+export default function Toast({ message }) {
   return (
     <div
       className="relative bg-emerald-500 shadow-lg mx-auto bg w-96 max-w-full text-sm pointer-events-auto bg-clip-padding pos rounded-lg block mb-3"
@@ -39,7 +39,8 @@ export default function Toast() {
         </div>
       </div>
       <div className="p-3 bg-blue-600 rounded-b-lg break-words text-white">
-        Your account has been created sucessfully. You now log in.{" "}
+        Your account has been
+        {message || 'created sucessfully. You now log in.{" "}'}
       </div>
     </div>
   );

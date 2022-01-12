@@ -2,7 +2,7 @@ import React from "react";
 
 // components
 
-import CardSettings from "components/Cards/CardSettings.js";
+import RegisterBusiness from "components/Cards/CardSettings.js";
 // import CardProfile from "components/Cards/CardProfile.js";
 
 import Admin from "layouts/Admin.js";
@@ -14,7 +14,7 @@ function Settings() {
     <Page title={"Business Registration"}>
       <div className="flex flex-wrap">
         <div className="w-full lg:w-12/12 px-4">
-          <CardSettings />
+          <RegisterBusiness />
         </div>
         {/* <div className="w-full lg:w-4/12 px-4">
           <CardProfile />

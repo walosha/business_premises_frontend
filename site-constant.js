@@ -1,4 +1,3 @@
-import { main } from "@popperjs/core";
 import * as Yup from "yup";
 
 export const signInform = {
@@ -18,6 +17,33 @@ export const registerForm = {
       "Passwords must match"
     ),
   }),
+};
+
+export const forgetPassword = {
+  schema: Yup.object({
+    email: Yup.string().email("Invalid email format").required(),
+  }),
+};
+
+export const resetPassword = {
+  schema: Yup.object({
+    password: Yup.string().required(),
+    confirmPpassword: Yup.string().oneOf(
+      [Yup.ref("password"), null],
+      "Passwords must match"
+    ),
+  }).required(),
+};
+
+export const changePassword = {
+  schema: Yup.object({
+    oldPassword: Yup.string().required(),
+    password: Yup.string().required(),
+    confirmPpassword: Yup.string().oneOf(
+      [Yup.ref("password"), null],
+      "Passwords must match"
+    ),
+  }).required(),
 };
 
 export const registerBusinessForm = {

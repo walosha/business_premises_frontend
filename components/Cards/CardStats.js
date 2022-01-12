@@ -36,7 +36,7 @@ export default function CardStats({
             </div>
           </div>
           <p className="text-sm text-blueGray-400 mt-4">
-            <span className={statPercentColor + " mr-2"}>
+            {/* <span className={statPercentColor + " mr-2"}>
               <i
                 className={
                   statArrow === "up"
@@ -45,10 +45,10 @@ export default function CardStats({
                     ? "fas fa-arrow-down"
                     : ""
                 }
-              ></i>{" "}
+              ></i>
               {statPercent}%
             </span>
-            <span className="whitespace-nowrap">{statDescripiron}</span>
+            <span className="whitespace-nowrap">{statDescripiron}</span> */}
           </p>
         </div>
       </div>
