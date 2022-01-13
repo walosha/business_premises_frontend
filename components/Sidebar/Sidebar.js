@@ -221,7 +221,7 @@ export default function Sidebar() {
                           : "text-blueGray-300")
                       }
                     ></i>{" "}
-                    Reporting
+                    Business List
                   </a>
                 </Link>
               </li>{" "}

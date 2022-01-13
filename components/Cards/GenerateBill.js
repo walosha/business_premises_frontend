@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { generateInvoiceForm } from "site-constant";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/router";
 import NaijaStates from "naija-state-local-government";
 import { useDebounce } from "lib/hooks/useDebounce";
 import Loader from "components/loader/Loader";
+import NumberFormat from "react-number-format";
 
 // components
 
@@ -24,6 +25,7 @@ function GenerateBill({ paramsId }) {
     formState: { errors, isDirty, isValid },
     register,
     setError,
+    control,
     watch,
     reset,
   } = useForm({
@@ -63,9 +65,8 @@ function GenerateBill({ paramsId }) {
     axios
       .all([MDAs, countries])
       .then((response) => {
-        const [mdas, countries] = response;
+        const [mdas] = response;
         setMdas(mdas.data.data);
-        setCountries(countries.data.data);
       })
       .catch(console.log);
   }, []);
@@ -89,12 +90,11 @@ function GenerateBill({ paramsId }) {
           if (!bioResult) {
             reset({
               address: "",
-              business_id: "",
               lga: "",
               name: "",
               state: "",
             });
-            return setError("id", {
+            return setError("business_id", {
               type: "server",
               message: "Business Identification does not exit!",
             });
@@ -106,6 +106,7 @@ function GenerateBill({ paramsId }) {
   }, 1000);
 
   const onSubmit = (data) => {
+    console.log("watch", watch("amount"));
     setLoading(true);
     delete data.business_id;
     delete data.lga;
@@ -267,7 +268,6 @@ function GenerateBill({ paramsId }) {
                 <div className="mb-3 xl:w-96">
                   <select
                     disabled
-                    disabled
                     {...register("state")}
                     className="form-select appearance-none block rounded w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 transition  ease-in-out  m-0      focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                     aria-label="Default select example"
@@ -392,11 +392,26 @@ function GenerateBill({ paramsId }) {
                 >
                   Amount
                 </label>
-                <input
+                <Controller
+                  control={control}
+                  name="amount"
+                  render={({ field: { onChange, ...props } }) => (
+                    <NumberFormat
+                      {...props}
+                      onValueChange={(values) => {
+                        const { value } = values;
+                        onChange(value);
+                      }}
+                      thousandSeparator
+                      prefix={"₦"}
+                      className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                    />
+                  )}
+                />
+                {/* <input
                   {...register("amount")}
                   type="number"
-                  className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                />
+                /> */}
                 <span className="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
                   {errors.amount?.message}
                 </span>

@@ -74,6 +74,6 @@ export const generateInvoiceForm = {
     state: Yup.string().required(),
     tax_item_id: Yup.string().required(),
     mda_id: Yup.string().required(),
-    amount: Yup.number().required(),
+    amount: Yup.string().required(),
   }),
 };

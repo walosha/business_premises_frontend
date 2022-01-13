@@ -61,7 +61,6 @@ function CardSettings() {
           });
       });
   };
-  console.log(NaijaStates.lgas("Oyo"));
   return (
     <>
       <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-100 border-0">
@@ -99,7 +98,7 @@ function CardSettings() {
                     className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                     htmlFor="grid-password"
                   >
-                    Business Owner Name
+                    Owner's Name
                   </label>
                   <input
                     {...register("owner_name")}
