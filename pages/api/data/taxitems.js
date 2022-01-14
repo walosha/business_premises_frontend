@@ -8,7 +8,6 @@ async function userHandler(req, res) {
       // Update or create data in your database
 
       const { mda_id } = req.query;
-      console.log({ mda_id });
       const taxItems = await TaxItems.find({ mda_id: mda_id });
       res.status(200).json({ data: taxItems });
       break;

@@ -106,15 +106,12 @@ function GenerateBill({ paramsId }) {
   }, 1000);
 
   const onSubmit = (data) => {
-    console.log("watch", watch("amount"));
-    setLoading(true);
+    console.setLoading(true);
     delete data.business_id;
     delete data.lga;
     delete data.name;
     delete data.state;
     delete data.address;
-    console.log({ data });
-    // throw new Error();
     isEditModde
       ? axios
           .patch("/api/invoices", data)

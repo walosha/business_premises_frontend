@@ -10,16 +10,19 @@ import { useRouter } from "next/router";
 export default function HeaderStats() {
   const [businessesCount, setBusinessCount] = useState(0);
   const [invoicesCount, setInvoicesCount] = useState(0);
+  const [paymentsCount, setPaymentsCount] = useState(0);
   const router = useRouter();
   useEffect(() => {
     const businesses = axios.get("/api/businesses/count");
     const invoices = axios.get("/api/invoices/count");
+    const payments = axios.get("/api/payments/count");
     axios
-      .all([businesses, invoices])
+      .all([businesses, invoices, payments])
       .then((response) => {
-        const [businesses, invoices] = response;
+        const [businesses, invoices, payments] = response;
         setBusinessCount(businesses.data.data);
         setInvoicesCount(invoices.data.data[0]);
+        setPaymentsCount(payments.data.data[0]);
       })
       .catch((err) => {
         if (err?.response?.status === 401) {
@@ -28,6 +31,7 @@ export default function HeaderStats() {
         }
       });
   }, []);
+
   return (
     <>
       {/* Header */}
@@ -63,7 +67,7 @@ export default function HeaderStats() {
               <div className="w-full lg:w-6/12 xl:w-4/12 px-4">
                 <CardStats
                   statSubtitle="Current Amount Generated"
-                  statTitle="N 924,000.43"
+                  statTitle={formatCurrency(paymentsCount?.totalAmount)}
                   statArrow="down"
                   statPercent="1.10"
                   statPercentColor="text-orange-500"

@@ -29,7 +29,9 @@ const InvoiceNo = ({ invoice }) => (
     </View>
     <View style={styles.invoiceDateContainer}>
       <Text style={styles.label}>Date: </Text>
-      <Text>{convertToDate(invoice.created_at)}</Text>
+      <Text style={styles.invoiceDate}>
+        {convertToDate(invoice.created_at)}
+      </Text>
     </View>
   </Fragment>
 );

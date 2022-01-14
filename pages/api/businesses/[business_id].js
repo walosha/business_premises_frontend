@@ -58,7 +58,6 @@ async function get_a_business(req, res) {
     let business = await Business.findOne({
       business_id: 1 * business_id,
     }).select("name address lga state business_id -user");
-    console.log(JSON.stringify({ business }));
     return res.status(200).json({ success: true, data: business });
   } catch (error) {
     return res.status(500).send(error.message);

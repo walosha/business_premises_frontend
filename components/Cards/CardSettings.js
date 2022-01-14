@@ -41,7 +41,6 @@ function CardSettings() {
 
   const onSubmit = (data) => {
     setLoading(true);
-    console.log({ data });
     axios
       .post("/api/businesses", data)
       .then((res) => {

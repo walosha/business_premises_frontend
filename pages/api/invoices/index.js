@@ -32,7 +32,6 @@ async function createBill(req, res) {
   if (Object.values(req.body).length > 3) {
     try {
       req.body.created_by = req.user;
-      console.log("createBill", req.body);
       const invoice = await Invoice.create(req.body);
       return res.status(200).json({ success: true, data: invoice });
     } catch (error) {
@@ -46,7 +45,6 @@ async function updateBill(req, res) {
   if (Object.values(req.body).length > 3) {
     try {
       req.body.created_by = req.user;
-      console.log("UPDATE", req.body);
       const invoice = await Invoice.findByIdAndUpdate(req.body.id, req.body);
       return res.status(200).json({ success: true, data: invoice });
     } catch (error) {
