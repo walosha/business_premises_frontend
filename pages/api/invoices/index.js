@@ -73,7 +73,7 @@ async function getAllInvoices(req, res) {
       let invoice = await Invoice.findById(id).populate();
       return res.status(200).json({ success: true, data: invoice });
     }
-    let businesses = await Invoice.find({}).populate();
+    let businesses = await Invoice.find({ status: "unpaid" }).populate();
     return res.status(200).json({ success: true, data: businesses });
   } catch (error) {
     return res.status(500).send(error.message);

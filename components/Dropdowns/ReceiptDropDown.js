@@ -49,7 +49,7 @@ const InvoiceDropdown = ({ route }) => {
             router.push("/receipt/" + route);
           }}
         >
-          View
+          View Receipt
         </a>
       </div>
     </>
