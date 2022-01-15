@@ -106,7 +106,6 @@ function GenerateBill({ paramsId }) {
   }, 1000);
 
   const onSubmit = (data) => {
-    console.setLoading(true);
     delete data.business_id;
     delete data.lga;
     delete data.name;
