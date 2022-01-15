@@ -97,7 +97,7 @@ const InvoiceDoc = ({ data, isloading }) => {
         <InvoiceNo invoice={data} />
         <BillTo invoice={data} />
         <InvoiceItemsTable invoice={data} />
-        <InvoiceThankYouMsg />
+        <InvoiceThankYouMsg invoice={data} />
       </Page>
     </Document>
   );
