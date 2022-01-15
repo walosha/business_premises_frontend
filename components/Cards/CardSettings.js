@@ -189,13 +189,13 @@ function CardSettings() {
                   >
                     Select Business Type
                   </label>
-                  <div class="mb-3 xl:w-96">
+                  <div className="mb-3 xl:w-96">
                     <select
                       {...register("business_type")}
-                      class="form-select appearance-none block rounded w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 transition  ease-in-out  m-0      focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                      className="form-select appearance-none block rounded w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 transition  ease-in-out  m-0      focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                       aria-label="Default select example"
                     >
-                      <option value="" selected hidden>
+                      <option defaultValue="" value="" hidden>
                         {" "}
                         select Business Type
                       </option>
@@ -219,13 +219,13 @@ function CardSettings() {
                   >
                     Select Business Owner structure
                   </label>
-                  <div class="mb-3 xl:w-96">
+                  <div className="mb-3 xl:w-96">
                     <select
                       {...register("business_structure")}
-                      class="form-select appearance-none block rounded w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 transition  ease-in-out  m-0      focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                      className="form-select appearance-none block rounded w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 transition  ease-in-out  m-0      focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                       aria-label="Default select example"
                     >
-                      <option value="" selected hidden>
+                      <option defaultValue="" value="" hidden>
                         select Owner Structure
                       </option>
                       <option value="1">Sole Proprietorship</option>
@@ -270,17 +270,19 @@ function CardSettings() {
                   >
                     Select State
                   </label>
-                  <div class="mb-3 xl:w-96">
+                  <div className="mb-3 xl:w-96">
                     <select
                       {...register("state")}
-                      class="form-select appearance-none block rounded w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 transition  ease-in-out  m-0      focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                      className="form-select appearance-none block rounded w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 transition  ease-in-out  m-0      focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                       aria-label="Default select example"
                     >
-                      <option value="" selected hidden>
+                      <option defaultValue="" value="" hidden>
                         select State
                       </option>
-                      {NaijaStates.states().map((state) => (
-                        <option value={state}>{state}</option>
+                      {NaijaStates.states().map((state, key) => (
+                        <option key={key} value={state}>
+                          {state}
+                        </option>
                       ))}
                     </select>
                     <span className="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
@@ -297,19 +299,21 @@ function CardSettings() {
                   >
                     Select Location/LGA
                   </label>
-                  <div class="mb-3 xl:w-96">
+                  <div className="mb-3 xl:w-96">
                     <select
                       {...register("lga")}
-                      class="form-select appearance-none block rounded w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 transition  ease-in-out  m-0      focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                      className="form-select appearance-none block rounded w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 transition  ease-in-out  m-0      focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                       aria-label="Default select example"
                     >
-                      <option value="" selected hidden>
+                      <option defaultValue="" value="" hidden>
                         select LGA
                       </option>
                       {NaijaStates.lgas(
                         watch("state", false) || "Oyo"
-                      ).lgas.map((state) => (
-                        <option value={state}>{state}</option>
+                      ).lgas.map((state, key) => (
+                        <option key={key} value={state}>
+                          {state}
+                        </option>
                       ))}
                     </select>
                     <span className="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
@@ -328,7 +332,7 @@ function CardSettings() {
                   </label>
                   <select
                     {...register("country")}
-                    class="form-select appearance-none block rounded w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 transition  ease-in-out  m-0      focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                    className="form-select appearance-none block rounded w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 transition  ease-in-out  m-0      focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                     aria-label="Default select example"
                   >
                     <option value={""} hidden>

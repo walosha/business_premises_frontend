@@ -1,5 +1,6 @@
 /* eslint-disable react/jsx-no-target-blank */
 import React, { useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
 import axios from "axios";
 import Link from "next/link";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -15,6 +16,7 @@ function Index() {
   const Router = useRouter();
   const { schema } = signInform;
   const router = useRouter();
+  const [, setCookie] = useCookies(["user"]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -42,12 +44,18 @@ function Index() {
         // setSuccess(true);
         if (res.status === 200) {
           const { token } = res.data;
+          setCookie("user", JSON.stringify(token), {
+            path: "/",
+            maxAge: 720,
+            sameSite: true,
+          });
           localStorage.setItem("token", token);
           axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
           return setTimeout(() => Router.push("/admin/dashboard"), 4000);
         }
       })
       .catch((err) => {
+        console.log(err);
         setLoading(false);
         err?.response?.status === 401 &&
           setError("password", {

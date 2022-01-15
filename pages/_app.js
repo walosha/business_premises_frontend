@@ -4,7 +4,7 @@ import App from "next/app";
 import Head from "next/head";
 import Router from "next/router";
 import NextNProgress from "nextjs-progressbar";
-
+import { CookiesProvider } from "react-cookie";
 import PageChange from "components/PageChange/PageChange.js";
 
 import "@fortawesome/fontawesome-free/css/all.min.css";
@@ -67,7 +67,9 @@ Business Premises
         </Head>
         <Layout>
           <NextNProgress />
-          <Component {...pageProps} />
+          <CookiesProvider>
+            <Component {...pageProps} />
+          </CookiesProvider>
         </Layout>
       </React.Fragment>
     );

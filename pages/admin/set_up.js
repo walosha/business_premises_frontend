@@ -1,13 +1,11 @@
-import React from "react";
-
-// components
-
-import CardSettings from "components/Cards/CardSettings.js";
-// import CardProfile from "components/Cards/CardProfile.js";
+import React, { useEffect } from "react";
 
 import Admin from "layouts/Admin.js";
-import withAuth from "lib/Hoc/withAuth";
+import { parseCookies, parseJwt } from "utils/parseCookie";
+import { useRouter } from "next/router";
 import { Page } from "components/Helmet/Helmet";
+import withAuth from "lib/Hoc/withAuth";
+import useAllowedRoles from "lib/hooks/useRoles";
 
 function Settings() {
   return (
@@ -17,11 +15,19 @@ function Settings() {
   );
 }
 
-function AdminSettings() {
+function AdminSettings({ token }) {
+  useAllowedRoles(token);
   return (
     <Admin>
       <Settings />
     </Admin>
   );
 }
+
+export async function getServerSideProps({ req }) {
+  const data = parseCookies(req);
+
+  return { props: { token: data.user || null } };
+}
+
 export default withAuth(AdminSettings);

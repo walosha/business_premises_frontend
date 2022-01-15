@@ -1,8 +1,8 @@
 const { promisify } = require("util");
 const jwt = require("jsonwebtoken");
 
-export const signToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
+export const signToken = (data) => {
+  return jwt.sign(data, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
 };
