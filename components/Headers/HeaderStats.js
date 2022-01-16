@@ -8,7 +8,7 @@ import { formatCurrency } from "utils/formatCurrency";
 import { useRouter } from "next/router";
 
 export default function HeaderStats() {
-  const [businessesCount, setBusinessCount] = useState(0);
+  const [businessesCount, setBusinessCount] = useState("---------");
   const [invoicesCount, setInvoicesCount] = useState(0);
   const [paymentsCount, setPaymentsCount] = useState(0);
   const router = useRouter();

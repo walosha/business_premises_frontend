@@ -53,14 +53,18 @@ async function createPayment(req, res) {
 }
 
 async function getAllPayments(req, res) {
-  const { id } = req.query;
+  const { id, offset = 1 } = req.query;
 
   try {
     if (id) {
       let invoice = await Payment.findById(id).populate();
       return res.status(200).json({ success: true, data: invoice });
     }
-    let payments = await Payment.paginate({}, pageOptions);
+
+    let payments = await Payment.paginate(
+      {},
+      { ...pageOptions, page: offset, offset: offset * 5 }
+    );
     return res.status(200).json({ success: true, data: payments });
   } catch (error) {
     return res.status(500).send(error.message);

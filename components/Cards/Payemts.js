@@ -1,28 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
-
-// components
-
 import ReceiptDropDown from "components/Dropdowns/ReceiptDropDown";
 import { formatCurrency } from "utils/formatCurrency";
-import axios from "axios";
 import Loader from "components/loader/Loader";
 import { convertToDate } from "utils/formatDate";
+// Util for GitHub API.
 
-export default function CardTable({ color }) {
-  const [invoices, setInvoices] = useState([]);
-  const [isLoading, setLoading] = useState(false);
-  useEffect(() => {
-    setLoading(true);
-    axios
-      .get("/api/payments")
-      .then((response) => {
-        setInvoices(response.data.data.data);
-        setLoading(false);
-      })
-      .catch((err) => setLoading(true));
-  }, []);
-
+export default function CardTable({ color, invoices, isLoading }) {
   return (
     <>
       <div
