@@ -2,6 +2,7 @@ import withProtect from "lib/middlewares/withProtect";
 import Payment from "lib/models/Payment";
 import Invoice from "lib/models/Invoice";
 import connectDB from "lib/mongodb";
+import { pageOptions } from "lib/models/paginate";
 
 async function userHandler(req, res) {
   const { method } = req;
@@ -59,8 +60,8 @@ async function getAllPayments(req, res) {
       let invoice = await Payment.findById(id).populate();
       return res.status(200).json({ success: true, data: invoice });
     }
-    let invoices = await Payment.find({}).populate();
-    return res.status(200).json({ success: true, data: invoices });
+    let payments = await Payment.paginate({}, pageOptions);
+    return res.status(200).json({ success: true, data: payments });
   } catch (error) {
     return res.status(500).send(error.message);
   }

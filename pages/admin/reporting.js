@@ -16,7 +16,7 @@ function Maps() {
     axios
       .get("/api/businesses")
       .then((response) => {
-        setBusinesses(response.data.data);
+        setBusinesses(response.data.data.data);
       })
       .catch(console.log);
   }, []);

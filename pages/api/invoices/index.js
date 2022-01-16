@@ -1,5 +1,6 @@
 import withProtect from "lib/middlewares/withProtect";
 import Invoice from "lib/models/Invoice";
+import { pageOptions } from "lib/models/paginate";
 import connectDB from "lib/mongodb";
 
 async function userHandler(req, res) {
@@ -73,7 +74,7 @@ async function getAllInvoices(req, res) {
       let invoice = await Invoice.findById(id).populate();
       return res.status(200).json({ success: true, data: invoice });
     }
-    let businesses = await Invoice.find({ status: "unpaid" }).populate();
+    let businesses = await Invoice.paginate({ status: "unpaid" }, pageOptions);
     return res.status(200).json({ success: true, data: businesses });
   } catch (error) {
     return res.status(500).send(error.message);

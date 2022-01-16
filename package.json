@@ -22,6 +22,7 @@
     "html-to-text": "^8.1.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.1.3",
+    "mongoose-paginate-v2": "^1.5.0",
     "mongoose-sequence": "^5.3.1",
     "naija-state-local-government": "^1.1.2",
     "next": "10.0.9",

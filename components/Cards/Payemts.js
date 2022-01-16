@@ -17,7 +17,7 @@ export default function CardTable({ color }) {
     axios
       .get("/api/payments")
       .then((response) => {
-        setInvoices(response.data.data);
+        setInvoices(response.data.data.data);
         setLoading(false);
       })
       .catch((err) => setLoading(true));
