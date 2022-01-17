@@ -40,7 +40,7 @@ function Payments() {
   useEffect(() => {
     async function fetchData() {
       const response = await axios(
-        `/api/payments?offset=${pageOffset}`
+        `/api/payments?page=${pageOffset}`
         // `/api/payments?limit=1&offset=${pageOffset})`  //set limit
       );
       setInvoices(response.data.data.data);

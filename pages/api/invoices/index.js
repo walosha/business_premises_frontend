@@ -67,14 +67,17 @@ async function deleteBill(req, res) {
 }
 
 async function getAllInvoices(req, res) {
-  const { id } = req.query;
+  const { id, page } = req.query;
 
   try {
     if (id) {
       let invoice = await Invoice.findById(id).populate();
       return res.status(200).json({ success: true, data: invoice });
     }
-    let businesses = await Invoice.paginate({ status: "unpaid" }, pageOptions);
+    let businesses = await Invoice.paginate(
+      { status: "unpaid" },
+      { ...pageOptions, page, offset: page * 5 }
+    );
     return res.status(200).json({ success: true, data: businesses });
   } catch (error) {
     return res.status(500).send(error.message);

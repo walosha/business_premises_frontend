@@ -53,7 +53,7 @@ async function createPayment(req, res) {
 }
 
 async function getAllPayments(req, res) {
-  const { id, offset = 1 } = req.query;
+  const { id, page = 1 } = req.query;
 
   try {
     if (id) {
@@ -63,7 +63,7 @@ async function getAllPayments(req, res) {
 
     let payments = await Payment.paginate(
       {},
-      { ...pageOptions, page: offset, offset: offset * 5 }
+      { ...pageOptions, page, offset: page * 5 }
     );
     return res.status(200).json({ success: true, data: payments });
   } catch (error) {

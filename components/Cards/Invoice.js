@@ -9,20 +9,7 @@ import axios from "axios";
 import Loader from "components/loader/Loader";
 import { convertToDate } from "utils/formatDate";
 
-export default function CardTable({ color }) {
-  const [invoices, setInvoices] = useState([]);
-  const [isLoading, setLoading] = useState(false);
-  useEffect(() => {
-    setLoading(true);
-    axios
-      .get("/api/invoices")
-      .then((response) => {
-        setInvoices(response.data.data.data);
-        setLoading(false);
-      })
-      .catch((err) => setLoading(true));
-  }, []);
-
+export default function CardTable({ color, invoices, isLoading }) {
   return (
     <>
       <div

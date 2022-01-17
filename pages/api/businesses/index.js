@@ -51,9 +51,14 @@ async function registerBusiness(req, res) {
     .json({ success: false, data: "Add a registration number" });
 }
 
-async function getAllBusinesses(_, res) {
+async function getAllBusinesses(req, res) {
+  const { page } = req.query;
+
   try {
-    let businesses = await Business.paginate({}, pageOptions);
+    let businesses = await Business.paginate(
+      {},
+      { ...pageOptions, page, offset: page * 5 }
+    );
     return res.status(200).json({ success: true, data: businesses });
   } catch (error) {
     return res.status(500).send(error.message);
