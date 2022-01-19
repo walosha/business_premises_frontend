@@ -1,6 +1,6 @@
+import connectDB from "lib/mongodb";
 import withProtect from "lib/middlewares/withProtect";
 import Invoice from "lib/models/Invoice";
-import connectDB from "lib/mongodb";
 
 async function userHandler(req, res) {
   const { method } = req;

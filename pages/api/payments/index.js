@@ -1,7 +1,8 @@
+import connectDB from "lib/mongodb";
 import withProtect from "lib/middlewares/withProtect";
 import Payment from "lib/models/Payment";
 import Invoice from "lib/models/Invoice";
-import connectDB from "lib/mongodb";
+// import Businesses from "lib/models/Businesses";
 import { pageOptions } from "lib/models/paginate";
 
 async function userHandler(req, res) {

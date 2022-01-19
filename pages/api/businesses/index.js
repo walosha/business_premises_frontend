@@ -1,7 +1,7 @@
+import connectDB from "lib/mongodb";
 import withProtect from "lib/middlewares/withProtect";
 import Business from "lib/models/Businesses";
 import { pageOptions } from "lib/models/paginate";
-import connectDB from "lib/mongodb";
 
 async function userHandler(req, res) {
   const { method } = req;

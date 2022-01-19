@@ -1,7 +1,7 @@
+import connectDB from "lib/mongodb";
 import withProtect from "lib/middlewares/withProtect";
 import Invoice from "lib/models/Invoice";
 import { pageOptions } from "lib/models/paginate";
-import connectDB from "lib/mongodb";
 
 async function userHandler(req, res) {
   const { method } = req;
@@ -76,7 +76,7 @@ async function getAllInvoices(req, res) {
     }
     let businesses = await Invoice.paginate(
       { status: "unpaid" },
-      { ...pageOptions, page, offset: page * 5, sort: "-updated_at" }
+      { ...pageOptions, page, offset: page * 5, sort: "-date" }
     );
     return res.status(200).json({ success: true, data: businesses });
   } catch (error) {
