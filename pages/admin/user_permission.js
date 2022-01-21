@@ -10,7 +10,9 @@ import useAllowedRoles from "lib/hooks/useRoles";
 function Settings() {
   return (
     <Page title={"Set Up"}>
-      <div className="flex flex-wrap"></div>
+      <div className="flex flex-wrap">
+        <h1>Change User Permission</h1>
+      </div>
     </Page>
   );
 }

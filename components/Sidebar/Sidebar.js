@@ -7,7 +7,12 @@ import UserDropdown from "components/Dropdowns/UserDropdown.js";
 
 export default function Sidebar() {
   const [collapseShow, setCollapseShow] = React.useState("hidden");
+  const [tabDisplay, setDisplayTab] = React.useState(false);
+
   const router = useRouter();
+  function onSetUpClick() {
+    setDisplayTab(!tabDisplay);
+  }
   return (
     <>
       <nav className="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden shadow-xl bg-white flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6">
@@ -26,7 +31,7 @@ export default function Sidebar() {
               href="#pablo"
               className="md:block text-left md:pb-2 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0"
             >
-              Business Premises{" "}
+              Business Premises
             </a>
           </Link>
           {/* User */}
@@ -54,7 +59,7 @@ export default function Sidebar() {
                       href="#pablo"
                       className="md:block text-left md:pb-2 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0"
                     >
-                      Business Presmises{" "}
+                      Business Presmises
                     </a>
                   </Link>
                 </div>
@@ -104,7 +109,7 @@ export default function Sidebar() {
                           ? "opacity-75"
                           : "text-blueGray-300")
                       }
-                    ></i>{" "}
+                    ></i>
                     Dashboard
                   </a>
                 </Link>
@@ -127,7 +132,7 @@ export default function Sidebar() {
                           ? "opacity-75"
                           : "text-blueGray-300")
                       }
-                    ></i>{" "}
+                    ></i>
                     Register Company
                   </a>
                 </Link>
@@ -145,13 +150,13 @@ export default function Sidebar() {
                   >
                     <i
                       className={
-                        "fas fa-table mr-2 text-sm " +
+                        "fas fa-check-square mr-2 text-sm " +
                         (router.pathname.indexOf("/admin/generate_invoice") !==
                         -1
                           ? "opacity-75"
                           : "text-blueGray-300")
                       }
-                    ></i>{" "}
+                    ></i>
                     Generate Bill
                   </a>
                 </Link>
@@ -174,7 +179,7 @@ export default function Sidebar() {
                           ? "opacity-75"
                           : "text-blueGray-300")
                       }
-                    ></i>{" "}
+                    ></i>
                     Invoices
                   </a>
                 </Link>
@@ -192,12 +197,12 @@ export default function Sidebar() {
                   >
                     <i
                       className={
-                        "fas fa-table mr-2 text-sm " +
+                        "fas fa-credit-card mr-2 text-sm " +
                         (router.pathname.indexOf("/admin/payment") !== -1
                           ? "opacity-75"
                           : "text-blueGray-300")
                       }
-                    ></i>{" "}
+                    ></i>
                     Payment
                   </a>
                 </Link>
@@ -215,18 +220,18 @@ export default function Sidebar() {
                   >
                     <i
                       className={
-                        "fas fa-map-marked mr-2 text-sm " +
+                        "fas fa-building mr-2 text-sm " +
                         (router.pathname.indexOf("/admin/maps") !== -1
                           ? "opacity-75"
                           : "text-blueGray-300")
                       }
-                    ></i>{" "}
+                    ></i>
                     Business List
                   </a>
                 </Link>
-              </li>{" "}
+              </li>
               <li className="items-center">
-                <Link href="/admin/set_up">
+                <div className="align-items flex" onClick={onSetUpClick}>
                   <a
                     href="#pablo"
                     className={
@@ -238,15 +243,41 @@ export default function Sidebar() {
                   >
                     <i
                       className={
-                        "fas fa-map-marked mr-2 text-sm " +
+                        "fas fa-cog mr-2 text-sm " +
                         (router.pathname.indexOf("/admin/set_up") !== -1
                           ? "opacity-75"
                           : "text-blueGray-300")
                       }
-                    ></i>{" "}
-                    Set-Up
+                    ></i>
+                    <span className="mr-3"> Set-Up</span>{" "}
+                    <i
+                      className={
+                        `fas fa-chevron-${
+                          tabDisplay ? "down" : "right"
+                        } mr-2 text-sm ` +
+                        (router.pathname.indexOf("/admin/set_up") !== -1
+                          ? "opacity-75"
+                          : "text-blueGray-300")
+                      }
+                    ></i>
                   </a>
-                </Link>
+                </div>
+                {tabDisplay && (
+                  <ul className=" ml-5 list-style">
+                    <l1 className="flex text-xs font-bold uppercase p-2">
+                      <Link href="/admin/add_mda">Add MDA</Link>
+                    </l1>
+                    <l1 className="flex text-xs font-bold uppercase p-2">
+                      <Link href="/admin/add_revenue_item">Add Revenue</Link>
+                    </l1>
+                    <l1 className="flex text-xs font-bold uppercase p-2">
+                      <Link href="/admin/user_permission">User Permission</Link>
+                    </l1>
+                    <l1 className="flex text-xs font-bold uppercase p-2">
+                      <Link href="/admin/change_password">Change Password</Link>
+                    </l1>
+                  </ul>
+                )}
               </li>
             </ul>
           </div>

@@ -2,7 +2,7 @@ import React from "react";
 
 // components
 
-import RegisterBusiness from "components/Cards/CardSettings.js";
+import RegisterBusiness from "components/Cards/register_business.js";
 // import CardProfile from "components/Cards/CardProfile.js";
 
 import Admin from "layouts/Admin.js";
