@@ -17,10 +17,12 @@ export default function FooterSmall(props) {
               <div className="text-sm text-blueGray-500 font-semibold py-1 text-center md:text-left">
                 Copyright © {new Date().getFullYear()}{" "}
                 <a
-                  href="https://www.creative-tim.com?ref=nnjs-footer-small"
-                  className="text-white hover:text-blueGray-300 text-sm font-semibold py-1"
+                  target={"_blank"}
+                  rel="noreferrer"
+                  href="https://www.pacific-professional.com.ng/"
+                  className="text-white hover:text-blueGray-300 text-sm font-semibold py-1 inline-block px-1"
                 >
-                  Pacific Professional Service{" "}
+                  Developed by Pacific Professional Service{" "}
                 </a>
               </div>
             </div>
