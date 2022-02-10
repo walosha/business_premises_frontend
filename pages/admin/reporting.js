@@ -32,14 +32,14 @@ function Maps() {
         setPage(response.data.data.page);
       })
       .catch(console.log);
-  }, []);
+  }, [pageOffset]);
 
   const handlePageChange = (event) => {
     // when its content is loaded in useEffect.
     setPageOffset(event.selected);
   };
   return (
-    <Page title={"Bisness Register"}>
+    <Page title={"Register Business"}>
       <div className="flex flex-wrap">
         <div className="w-full px-4">
           <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">

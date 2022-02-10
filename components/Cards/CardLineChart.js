@@ -1,34 +1,49 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Chart from "chart.js";
+import axios from "axios";
+const month = [
+  "january",
+  "february",
+  "march",
+  "april",
+  "may",
+  "june",
+  "july",
+  "august",
+  "september",
+  "october",
+  "november",
+  "december",
+];
 
 export default function CardLineChart() {
+  const [isLoading, setLoading] = useState(false);
+  const [businessCount, setBusinessCount] = useState([]);
+
+  useEffect(() => {
+    setLoading(true);
+    axios
+      .get(`/api/businesses/registeredByMonth`)
+      .then((response) => {
+        setBusinessCount(response.data.data);
+        setLoading(false);
+      })
+      .catch((err) => setLoading(true));
+  }, []);
+
   React.useEffect(() => {
+    // month.map(item=>item)
     var config = {
       type: "line",
       data: {
-        labels: [
-          "January",
-          "February",
-          "March",
-          "April",
-          "May",
-          "June",
-          "July",
-        ],
+        labels: businessCount.map((month) => month.month),
         datasets: [
           {
             label: new Date().getFullYear(),
             backgroundColor: "#4c51bf",
             borderColor: "#4c51bf",
-            data: [65, 78, 66, 44, 56, 67, 75],
+            data: businessCount.map((month) => month.numberofdocuments),
             fill: false,
-          },
-          {
-            label: new Date().getFullYear() - 1,
-            fill: false,
-            backgroundColor: "#fff",
-            borderColor: "#fff",
-            data: [40, 68, 86, 74, 56, 60, 87],
           },
         ],
       },
@@ -37,7 +52,7 @@ export default function CardLineChart() {
         responsive: true,
         title: {
           display: false,
-          text: "Sales Charts",
+          text: "Business registered Charts",
           fontColor: "white",
         },
         legend: {
@@ -105,7 +120,7 @@ export default function CardLineChart() {
     };
     var ctx = document.getElementById("line-chart").getContext("2d");
     window.myLine = new Chart(ctx, config);
-  }, []);
+  }, [businessCount]);
   return (
     <>
       <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-blueGray-700">
