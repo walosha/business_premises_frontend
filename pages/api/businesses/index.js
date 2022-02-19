@@ -1,9 +1,9 @@
-import { createHmac } from "crypto";
 import connectDB from "lib/mongodb";
 import withProtect from "lib/middlewares/withProtect";
 import Business from "lib/models/Businesses";
 import { pageOptions } from "lib/models/paginate";
 import axios from "axios";
+import { generateHMAC256Auth } from "utils/generateHMAC256Auth";
 
 const ClientID = process.env.CLIENTID;
 
@@ -34,7 +34,6 @@ async function registerBusiness(req, res) {
         $or: [{ name }, { phone }, { reg_no }, { email }],
       }).exec();
 
-      console.log({ business });
       if (business?.length) {
         return res.status(422).json({
           success: "false",
@@ -45,15 +44,11 @@ async function registerBusiness(req, res) {
 
       req.body.user = req.user;
       const dataConcatenation = `${phone}2${state}${lga}${ClientID}`;
-      console.log({ dataConcatenation });
-      const Signature = await createHmac("sha256", process.env.CLIENTSECRET)
-        .update(dataConcatenation)
-        .digest("base64");
-
+     
       let config = {
         headers: {
           ClientId: ClientID,
-          Signature,
+          Signature:generateHMAC256Auth(dataConcatenation),
         },
       };
 

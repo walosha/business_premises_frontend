@@ -1,0 +1,23 @@
+{
+	"Error": false,
+	"ErrorCode": null,
+	"ResponseObject": {
+		"CustomerPrimaryContactId": 170486,
+		"CustomerId": 170094,
+		"Recipient": "First Capital",
+		"PayerId": "IJ-131022",
+		"Email": "go@ya.com",
+		"PhoneNumber": "09047498955",
+		"TIN": null,
+		"MDAName": "BOARD OF INTERNAL REVENUE SERVICE",
+		"RevenueHeadName": "MOTOR LICENSES ADMINISTRATION",
+		"ExternalRefNumber": null,
+		"PaymentURL": "https://uat.nasarawaigr.com/c/make-payment/1000248785",
+		"Description": "MOTOR LICENSES ADMINISTRATION | 12020102 ",
+		"RequestReference": null,
+		"IsDuplicateRequestReference": false,
+		"InvoiceNumber": "1000248785",
+		"InvoicePreviewUrl": "https://cashflow.parkwayprojects.xyz/v2/ViewInvoice/1000248785/Html",
+		"AmountDue": 89.03
+	}
+}
