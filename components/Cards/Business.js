@@ -98,6 +98,16 @@ export default function CardTable({ color, data }) {
                       : "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
                   }
                 >
+                  Company TIN
+                </th>
+                <th
+                  className={
+                    "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
+                    (color === "light"
+                      ? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
+                      : "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
+                  }
+                >
                   Oweners Name
                 </th>
                 <th
@@ -152,6 +162,7 @@ export default function CardTable({ color, data }) {
                     country,
                     created_at,
                     business_id,
+                    StateTIN,
                   },
                   index
                 ) => (
@@ -175,8 +186,12 @@ export default function CardTable({ color, data }) {
                       </span>
                     </th>
                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      {StateTIN ? StateTIN : "N/A"}{" "}
+                    </td>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                       {user.name}{" "}
                     </td>
+
                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                       <i className="fas fa-circle text-orange-500 mr-2"></i>{" "}
                       {business_type}

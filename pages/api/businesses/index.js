@@ -5,6 +5,8 @@ import Business from "lib/models/Businesses";
 import { pageOptions } from "lib/models/paginate";
 import axios from "axios";
 
+const ClientID = process.env.CLIENTID;
+
 async function userHandler(req, res) {
   const { method } = req;
 
@@ -24,37 +26,38 @@ async function userHandler(req, res) {
 }
 
 async function registerBusiness(req, res) {
-  if (req.body.reg_no) {
+  const { name, phone, email, lga, address, state, reg_no } = req.body;
+
+  if (reg_no) {
     try {
-      let business = await Business.findOne({ reg_no: req.body.req_no });
-      if (business) {
-        return res.status(433).json({
+      const business = await Business.find({
+        $or: [{ name }, { phone }, { reg_no }, { email }],
+      }).exec();
+
+      console.log({ business });
+      if (business?.length) {
+        return res.status(422).json({
           success: "false",
-          message: "Business already register on the platform !",
+          message:
+            "Business already registered with either name, phone, email or  registration no.",
         });
       }
 
       req.body.user = req.user;
-      const { name, phone, email, lga, address, state } = req.body;
-
-      const ClientID = process.env.CLIENTID;
-
       const dataConcatenation = `${phone}2${state}${lga}${ClientID}`;
       console.log({ dataConcatenation });
-      const Signature = createHmac("sha256", process.env.CLIENTSECRET)
+      const Signature = await createHmac("sha256", process.env.CLIENTSECRET)
         .update(dataConcatenation)
         .digest("base64");
 
-      console.log({ Signature });
-
       let config = {
         headers: {
-          ClientId: process.env.CLIENTID,
+          ClientId: ClientID,
           Signature,
         },
       };
 
-      const payerIdResponse = await axios.post(
+      const apiResponse = await axios.post(
         "https://uat.nasarawaigr.com/api/v1/statetin/create",
         {
           Name: name,
@@ -67,12 +70,16 @@ async function registerBusiness(req, res) {
         },
         config
       );
-      console.log({ payerIdResponse });
-      business = await Business.create({
+
+      const payerIdResponse = apiResponse.data.ResponseObject;
+      const newBusiness = await Business.create({
         ...req.body,
+        StateTIN: payerIdResponse.StateTIN,
+        NormalizedStateTIN: payerIdResponse.NormalizedStateTIN,
         api: payerIdResponse.data,
       });
-      return res.status(200).json({ success: true, data: business });
+
+      return res.status(200).json({ success: true, data: newBusiness });
     } catch (error) {
       console.log({ error });
       if (error.name === "MongoServerError" && error.code === 11000) {
