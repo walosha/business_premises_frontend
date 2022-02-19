@@ -8,6 +8,22 @@ import NaijaStates from "naija-state-local-government";
 
 // components
 
+const lgas = [
+  "Akwanga",
+  "Awe",
+  "Doma",
+  "Karu",
+  "Keana",
+  "Keffi",
+  "Kokona",
+  "Lafia",
+  "Nasarawa",
+  "Nasarawa-Eggon",
+  "Obi",
+  "Toto",
+  "Wamba",
+];
+
 function CardSettings() {
   const [industries, setIndustries] = useState([]);
   const [countries, setCountries] = useState([]);
@@ -279,11 +295,8 @@ function CardSettings() {
                       <option defaultValue="" value="" hidden>
                         select State
                       </option>
-                      {NaijaStates.states().map((state, key) => (
-                        <option key={key} value={state}>
-                          {state}
-                        </option>
-                      ))}
+
+                      <option value="NAS">Nasarawa</option>
                     </select>
                     <span className="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
                       {errors.state?.message}
@@ -308,10 +321,8 @@ function CardSettings() {
                       <option defaultValue="" value="" hidden>
                         select LGA
                       </option>
-                      {NaijaStates.lgas(
-                        watch("state", false) || "Oyo"
-                      ).lgas.map((state, key) => (
-                        <option key={key} value={state}>
+                      {lgas.map((state) => (
+                        <option key={state} value={state.toUpperCase()}>
                           {state}
                         </option>
                       ))}
@@ -339,11 +350,9 @@ function CardSettings() {
                       {" "}
                       select Country
                     </option>
-                    {countries.map(({ name, _id }) => (
-                      <option key={_id} value={name}>
-                        {name}
-                      </option>
-                    ))}
+                    <option selected value={"Nigeria"}>
+                      Nigeria
+                    </option>
                   </select>
                   <span className="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
                     {errors.country?.message}

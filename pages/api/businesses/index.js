@@ -1,7 +1,9 @@
+import { createHmac } from "crypto";
 import connectDB from "lib/mongodb";
 import withProtect from "lib/middlewares/withProtect";
 import Business from "lib/models/Businesses";
 import { pageOptions } from "lib/models/paginate";
+import axios from "axios";
 
 async function userHandler(req, res) {
   const { method } = req;
@@ -31,10 +33,49 @@ async function registerBusiness(req, res) {
           message: "Business already register on the platform !",
         });
       }
+
       req.body.user = req.user;
-      business = await Business.create(req.body);
+      const { name, phone, email, lga, address, state } = req.body;
+
+      const ClientID = "2s07xnH7FTjssEEInILjtuAENvqFeMrLuDR4eAsBH3s=";
+
+      const dataConcatenation = `${phone}2${state}${lga}${ClientID}`;
+      console.log({ dataConcatenation });
+      const Signature = createHmac(
+        "sha256",
+        "kXIU7qQ9iqa0BKFmfj0Lz29eYx2xVa7D8GHz9Mm5zjOdbloqqoajKy8yHqSH"
+      )
+        .update(dataConcatenation)
+        .digest("base64");
+
+      console.log({ Signature });
+
+      let config = {
+        headers: {
+          ClientId: "2s07xnH7FTjssEEInILjtuAENvqFeMrLuDR4eAsBH3s=",
+          Signature,
+        },
+      };
+
+      const payerIdResponse = await axios.post(
+        "https://uat.nasarawaigr.com/api/v1/statetin/create",
+        {
+          Name: name,
+          PhoneNumber: phone,
+          Email: email,
+          Address: address,
+          StateCode: state,
+          LGACode: lga,
+          PayerCategory: 2,
+        },
+        config
+      );
+      console.log({ payerIdResponse });
+      throw new Error();
+      business = await Business.create({ ...req.body });
       return res.status(200).json({ success: true, data: business });
     } catch (error) {
+      console.log({ error });
       if (error.name === "MongoServerError" && error.code === 11000) {
         return res.status(422).send({
           success: "false",
