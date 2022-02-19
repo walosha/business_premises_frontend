@@ -37,14 +37,11 @@ async function registerBusiness(req, res) {
       req.body.user = req.user;
       const { name, phone, email, lga, address, state } = req.body;
 
-      const ClientID = "2s07xnH7FTjssEEInILjtuAENvqFeMrLuDR4eAsBH3s=";
+      const ClientID = process.env.CLIENTID;
 
       const dataConcatenation = `${phone}2${state}${lga}${ClientID}`;
       console.log({ dataConcatenation });
-      const Signature = createHmac(
-        "sha256",
-        "kXIU7qQ9iqa0BKFmfj0Lz29eYx2xVa7D8GHz9Mm5zjOdbloqqoajKy8yHqSH"
-      )
+      const Signature = createHmac("sha256", process.env.CLIENTSECRET)
         .update(dataConcatenation)
         .digest("base64");
 
@@ -52,7 +49,7 @@ async function registerBusiness(req, res) {
 
       let config = {
         headers: {
-          ClientId: "2s07xnH7FTjssEEInILjtuAENvqFeMrLuDR4eAsBH3s=",
+          ClientId: process.env.CLIENTID,
           Signature,
         },
       };
@@ -71,8 +68,10 @@ async function registerBusiness(req, res) {
         config
       );
       console.log({ payerIdResponse });
-      throw new Error();
-      business = await Business.create({ ...req.body });
+      business = await Business.create({
+        ...req.body,
+        api: payerIdResponse.data,
+      });
       return res.status(200).json({ success: true, data: business });
     } catch (error) {
       console.log({ error });
