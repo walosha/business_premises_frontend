@@ -1,7 +1,11 @@
+import { createHmac } from "crypto";
 import connectDB from "lib/mongodb";
 import withProtect from "lib/middlewares/withProtect";
 import Business from "lib/models/Businesses";
 import { pageOptions } from "lib/models/paginate";
+import axios from "axios";
+
+const ClientID = process.env.CLIENTID;
 
 async function userHandler(req, res) {
   const { method } = req;
@@ -22,19 +26,62 @@ async function userHandler(req, res) {
 }
 
 async function registerBusiness(req, res) {
-  if (req.body.reg_no) {
+  const { name, phone, email, lga, address, state, reg_no } = req.body;
+
+  if (reg_no) {
     try {
-      let business = await Business.findOne({ reg_no: req.body.req_no });
-      if (business) {
-        return res.status(433).json({
+      const business = await Business.find({
+        $or: [{ name }, { phone }, { reg_no }, { email }],
+      }).exec();
+
+      console.log({ business });
+      if (business?.length) {
+        return res.status(422).json({
           success: "false",
-          message: "Business already register on the platform !",
+          message:
+            "Business already registered with either name, phone, email or  registration no.",
         });
       }
+
       req.body.user = req.user;
-      business = await Business.create(req.body);
-      return res.status(200).json({ success: true, data: business });
+      const dataConcatenation = `${phone}2${state}${lga}${ClientID}`;
+      console.log({ dataConcatenation });
+      const Signature = await createHmac("sha256", process.env.CLIENTSECRET)
+        .update(dataConcatenation)
+        .digest("base64");
+
+      let config = {
+        headers: {
+          ClientId: ClientID,
+          Signature,
+        },
+      };
+
+      const apiResponse = await axios.post(
+        "https://uat.nasarawaigr.com/api/v1/statetin/create",
+        {
+          Name: name,
+          PhoneNumber: phone,
+          Email: email,
+          Address: address,
+          StateCode: state,
+          LGACode: lga,
+          PayerCategory: 2,
+        },
+        config
+      );
+
+      const payerIdResponse = apiResponse.data.ResponseObject;
+      const newBusiness = await Business.create({
+        ...req.body,
+        StateTIN: payerIdResponse.StateTIN,
+        NormalizedStateTIN: payerIdResponse.NormalizedStateTIN,
+        api: payerIdResponse.data,
+      });
+
+      return res.status(200).json({ success: true, data: newBusiness });
     } catch (error) {
+      console.log({ error });
       if (error.name === "MongoServerError" && error.code === 11000) {
         return res.status(422).send({
           success: "false",
