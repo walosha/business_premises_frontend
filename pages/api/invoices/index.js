@@ -53,8 +53,13 @@ async function createBill(req, res) {
 			}
 
 			const dataConcatenation =
-				tax_item_id + Number(amount).toFixed(2) + ClientID;
+				tax_item_id +
+				Number(amount).toFixed(2) +
+				process.env.PMNT_BASE_URL +
+				ClientID;
+
 			console.log({ dataConcatenation });
+
 			let config = {
 				headers: {
 					ClientId: ClientID,
@@ -72,11 +77,13 @@ async function createBill(req, res) {
 						},
 						Amount: +Number(amount).toFixed(2),
 					},
-					CallBackURL: "",
+					CallBackURL: process.env.PMNT_BASE_URL,
 				},
 				config
 			);
+
 			console.log({ xxx: apiResponse.data.ResponseObject });
+
 			const {
 				MDAName = "",
 				RevenueHeadName = "",
@@ -84,7 +91,8 @@ async function createBill(req, res) {
 				PaymentURL = "",
 				InvoicePreviewUrl = "",
 				Description,
-			} = apiResponse.data.ResponseObject;
+			} = apiResponse?.data?.ResponseObject;
+
 			req.body.created_by = req.user;
 
 			const invoice = await Invoice.create({
@@ -96,6 +104,7 @@ async function createBill(req, res) {
 				PaymentURL,
 				InvoicePreviewUrl,
 			});
+
 			return res.status(200).json({ success: true, data: invoice });
 		} catch (error) {
 			console.log({ error });
