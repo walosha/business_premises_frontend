@@ -66,7 +66,7 @@ async function createBill(req, res) {
 			const apiResponse = await axios.post(
 				"https://uat.nasarawaigr.com/api/v1/invoice/create",
 				{
-					RevenueHeadId: 1682,
+					RevenueHeadId: +tax_item_id,
 					TaxEntityInvoice: {
 						TaxEntity: {
 							PayerId: businessStateTIN?.StateTIN || "",
