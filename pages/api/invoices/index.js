@@ -88,7 +88,6 @@ async function createBill(req, res) {
 			} = apiResponse?.data?.ResponseObject;
 
 			req.body.created_by = req.user;
-			console.log({ body: req.body });
 			const invoice = await Invoice.create({
 				...req.body,
 				ApiDescription: Description,

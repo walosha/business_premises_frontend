@@ -67,7 +67,9 @@ export const registerBusinessForm = {
 
 export const generateInvoiceForm = {
 	schema: Yup.object({
-		business_id: Yup.string().min(9).required("business_id field is required"),
+		business_id: Yup.string("business id must be a number")
+			.min(9, ["business id must be at least 9 characters"])
+			.required("business id field is required"),
 		name: Yup.string().required(),
 		address: Yup.string().typeError().required(),
 		lga: Yup.string().required(),
