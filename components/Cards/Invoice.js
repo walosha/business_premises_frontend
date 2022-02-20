@@ -149,6 +149,7 @@ export default function CardTable({ color, invoices, isLoading }) {
 										InvoiceNumber,
 										created_at,
 										business_id,
+										PaymentURL,
 									},
 									index
 								) => (
@@ -188,7 +189,7 @@ export default function CardTable({ color, invoices, isLoading }) {
 											{convertToDate(created_at)}
 										</td>
 										<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
-											<InvoiceDropdown route={id} />
+											<InvoiceDropdown PaymentURL={PaymentURL} route={id} />
 										</td>
 									</tr>
 								)
