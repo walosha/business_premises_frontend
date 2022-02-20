@@ -182,7 +182,7 @@ export default function CardTable({ color, invoices, isLoading }) {
 											{formatCurrency(amount)}
 										</td>
 										<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-											<div className="flex"> {created_by.name} </div>
+											<div className="flex"> {created_by?.name} </div>
 										</td>
 										<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
 											{convertToDate(created_at)}
