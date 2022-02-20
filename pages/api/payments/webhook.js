@@ -23,25 +23,26 @@ async function createPayment(req, res) {
 
 	if (InvoiceNumber) {
 		try {
-			const invoice = await Invoice.findOneAndUpdate(
-				{ InvoiceNumber },
-				{ $set: { status: 1, paidSoFar: AmountPaid } },
-				{ new: true }
-			);
-
+			const invoice = await Invoice.findOne({ InvoiceNumber });
 			if (invoice?.status == 1) {
 				return res.status(200).json({ message: "Duplicate record" });
 			}
-			console.log({ 1: invoice._id, 2: invoice.id });
+
 			if (invoice) {
 				await Payment.create({
 					...others,
 					InvoiceNumber,
 					AmountPaid,
 					...others,
-					invoice_id: invoice._id || invoice.id,
+					invoice_id: invoice._id,
 				});
 			}
+
+			await Invoice.findOneAndUpdate(
+				{ InvoiceNumber },
+				{ $set: { status: 1, paidSoFar: AmountPaid } },
+				{ new: true }
+			);
 
 			return res.status(200).json({});
 		} catch (error) {
