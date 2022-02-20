@@ -1,9 +1,7 @@
 import connectDB from "lib/mongodb";
-import withProtect from "lib/middlewares/withProtect";
 import Payment from "lib/models/Payment";
 import Invoice from "lib/models/Invoice";
 // import Businesses from "lib/models/Businesses";
-import { pageOptions } from "lib/models/paginate";
 
 async function userHandler(req, res) {
 	const { method } = req;
@@ -34,14 +32,14 @@ async function createPayment(req, res) {
 			if (invoice?.status == 1) {
 				return res.status(200).json({ message: "Duplicate record" });
 			}
-
+			console.log({ 1: invoice._id, 2: invoice.id });
 			if (invoice) {
 				await Payment.create({
 					...others,
 					InvoiceNumber,
 					AmountPaid,
 					...others,
-					invoice_id: invoice._id,
+					invoice_id: invoice._id || invoice.id,
 				});
 			}
 

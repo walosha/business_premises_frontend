@@ -44,8 +44,6 @@ async function createBill(req, res) {
 				_id: business_id,
 			}).select("StateTIN -_id -user");
 
-			console.log({ businessStateTIN });
-
 			if (!businessStateTIN) {
 				return res
 					.status(404)
@@ -57,8 +55,6 @@ async function createBill(req, res) {
 				Number(amount).toFixed(2) +
 				process.env.PMNT_BASE_URL +
 				ClientID;
-
-			console.log({ dataConcatenation });
 
 			let config = {
 				headers: {
@@ -81,8 +77,6 @@ async function createBill(req, res) {
 				},
 				config
 			);
-
-			console.log({ xxx: apiResponse.data.ResponseObject });
 
 			const {
 				MDAName = "",
@@ -108,7 +102,6 @@ async function createBill(req, res) {
 			return res.status(200).json({ success: true, data: invoice });
 		} catch (error) {
 			console.log({ error });
-			console.log({ error: error.response.data.ResponseObject });
 			return res
 				.status(500)
 				.json({ success: false, data: error.response.data.ResponseObject });
@@ -143,7 +136,6 @@ async function deleteBill(req, res) {
 
 async function getAllInvoices(req, res) {
 	const { id, page } = req.query;
-	console.log("here");
 
 	try {
 		if (id) {
