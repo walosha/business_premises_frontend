@@ -5,6 +5,7 @@ import { pageOptions } from "lib/models/paginate";
 import { generateHMAC256Auth } from "utils/generateHMAC256Auth";
 import axios from "axios";
 import Business from "lib/models/Businesses";
+import { withSentry } from "@sentry/nextjs";
 
 const ClientID = process.env.CLIENTID;
 
@@ -77,7 +78,7 @@ async function createBill(req, res) {
 				},
 				config
 			);
-
+			console.log({ apiResponse: apiResponse?.data?.ResponseObject });
 			const {
 				MDAName = "",
 				RevenueHeadName = "",
@@ -85,6 +86,7 @@ async function createBill(req, res) {
 				PaymentURL = "",
 				InvoicePreviewUrl = "",
 				Description,
+				RequestReference,
 			} = apiResponse?.data?.ResponseObject;
 
 			req.body.created_by = req.user;
@@ -96,6 +98,7 @@ async function createBill(req, res) {
 				InvoiceNumber,
 				PaymentURL,
 				InvoicePreviewUrl,
+				RequestReference,
 			});
 
 			return res.status(200).json({ success: true, data: invoice });
@@ -151,4 +154,4 @@ async function getAllInvoices(req, res) {
 	}
 }
 
-module.exports = connectDB(withProtect(userHandler));
+module.exports = withSentry(connectDB(withProtect(userHandler)));
