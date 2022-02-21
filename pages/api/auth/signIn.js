@@ -2,6 +2,7 @@ import User from "lib/models/users";
 import connectDB from "lib/mongodb";
 import { signToken } from "utils/generateToken";
 import bcrypt from "bcrypt";
+import { withSentry } from "@sentry/nextjs";
 // import cookie from "cookie";
 // import TaxItems from "lib/models/taxItems";
 // import { taxItems } from "../../../files/tax_items";
@@ -68,4 +69,4 @@ async function signIn(req, res) {
 	}
 }
 
-module.exports = connectDB(userHandler);
+module.exports = withSentry(connectDB(userHandler));

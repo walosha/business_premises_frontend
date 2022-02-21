@@ -2,6 +2,7 @@ import connectDB from "lib/mongodb";
 import Payment from "lib/models/Payment";
 import Invoice from "lib/models/Invoice";
 import { generateHMAC256Auth } from "utils/generateHMAC256Auth";
+import { withSentry } from "@sentry/nextjs";
 // import Businesses from "lib/models/Businesses";
 
 async function userHandler(req, res) {
@@ -71,4 +72,4 @@ async function createPayment(req, res) {
 	return res.status(500).json({ success: false, data: "Fill all fields" });
 }
 
-module.exports = connectDB(userHandler);
+module.exports = withSentry(connectDB(userHandler));

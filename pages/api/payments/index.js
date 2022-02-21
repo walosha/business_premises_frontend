@@ -4,6 +4,7 @@ import Payment from "lib/models/Payment";
 import Invoice from "lib/models/Invoice";
 // import Businesses from "lib/models/Businesses";
 import { pageOptions } from "lib/models/paginate";
+import { withSentry } from "@sentry/nextjs";
 
 async function userHandler(req, res) {
 	const { method } = req;
@@ -38,4 +39,4 @@ async function getAllPayments(req, res) {
 	}
 }
 
-module.exports = connectDB(withProtect(userHandler));
+module.exports = withSentry(connectDB(withProtect(userHandler)));

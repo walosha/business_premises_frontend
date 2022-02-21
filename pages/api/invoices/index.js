@@ -5,6 +5,7 @@ import { pageOptions } from "lib/models/paginate";
 import { generateHMAC256Auth } from "utils/generateHMAC256Auth";
 import axios from "axios";
 import Business from "lib/models/Businesses";
+import { withSentry } from "@sentry/nextjs";
 
 const ClientID = process.env.CLIENTID;
 
@@ -153,4 +154,4 @@ async function getAllInvoices(req, res) {
 	}
 }
 
-module.exports = connectDB(withProtect(userHandler));
+module.exports = withSentry(connectDB(withProtect(userHandler)));

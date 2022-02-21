@@ -12,6 +12,14 @@ import { convertToDate } from "utils/formatDate";
 export default function CardTable({ color, invoices, isLoading }) {
 	return (
 		<>
+			<button
+				type="button"
+				onClick={() => {
+					throw new Error("Sentry Frontend Error");
+				}}
+			>
+				Throw error
+			</button>
 			<div
 				className={
 					"relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded " +

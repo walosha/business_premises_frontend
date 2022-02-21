@@ -1,6 +1,7 @@
 import connectDB from "lib/mongodb";
 import withProtect from "lib/middlewares/withProtect";
 import Invoice from "lib/models/Invoice";
+import { withSentry } from "@sentry/nextjs";
 
 async function userHandler(req, res) {
 	const { method } = req;
@@ -39,4 +40,4 @@ async function getAllInvoiceesCount(_, res) {
 	}
 }
 
-module.exports = connectDB(withProtect(userHandler));
+module.exports = withSentry(connectDB(withProtect(userHandler)));
