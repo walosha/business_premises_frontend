@@ -77,7 +77,7 @@ async function createBill(req, res) {
 				},
 				config
 			);
-
+			console.log({ apiResponse: apiResponse?.data?.ResponseObject });
 			const {
 				MDAName = "",
 				RevenueHeadName = "",
@@ -85,6 +85,7 @@ async function createBill(req, res) {
 				PaymentURL = "",
 				InvoicePreviewUrl = "",
 				Description,
+				RequestReference,
 			} = apiResponse?.data?.ResponseObject;
 
 			req.body.created_by = req.user;
@@ -96,6 +97,7 @@ async function createBill(req, res) {
 				InvoiceNumber,
 				PaymentURL,
 				InvoicePreviewUrl,
+				RequestReference,
 			});
 
 			return res.status(200).json({ success: true, data: invoice });

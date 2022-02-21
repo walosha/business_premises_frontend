@@ -1,6 +1,7 @@
 import connectDB from "lib/mongodb";
 import Payment from "lib/models/Payment";
 import Invoice from "lib/models/Invoice";
+import { generateHMAC256Auth } from "utils/generateHMAC256Auth";
 // import Businesses from "lib/models/Businesses";
 
 async function userHandler(req, res) {
@@ -19,8 +20,23 @@ async function userHandler(req, res) {
 }
 
 async function createPayment(req, res) {
-	const { InvoiceNumber, AmountPaid, ...others } = req.body;
+	const {
+		InvoiceNumber,
+		Mac,
+		AmountPaid,
+		PaymentRef,
+		RequestReference,
+		...others
+	} = req.body;
+	const concatString =
+		InvoiceNumber + PaymentRef + AmountPaid + RequestReference;
+	console.log(generateHMAC256Auth(concatString), Mac);
+	const concatStringWithoutNull =
+		InvoiceNumber + PaymentRef + AmountPaid + RequestReference;
+	console.log({ concatStringWithoutNull });
 
+	const isvalid = generateHMAC256Auth(concatString) === Mac;
+	console.log({ isvalid });
 	if (InvoiceNumber) {
 		try {
 			const invoice = await Invoice.findOne({ InvoiceNumber });
@@ -34,6 +50,9 @@ async function createPayment(req, res) {
 					InvoiceNumber,
 					AmountPaid,
 					...others,
+					PaymentRef,
+					Mac,
+					RequestReference,
 					invoice_id: invoice._id,
 				});
 			}
