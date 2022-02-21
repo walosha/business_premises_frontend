@@ -4,7 +4,7 @@ const connectDB = require("lib/mongodb");
 const bcrypt = require("bcrypt");
 const { withSentry } = require("@sentry/nextjs");
 
-function userHandler(req, res) {
+function passwordTesetHandler(req, res) {
 	const { method } = req;
 
 	switch (method) {
@@ -43,4 +43,4 @@ async function forgetPassword(req, res) {
 	}
 }
 
-module.exports = withSentry(connectDB(userHandler));
+module.exports = withSentry(connectDB(passwordTesetHandler));
