@@ -1,3 +1,4 @@
+import { withSentry } from "@sentry/nextjs";
 import Countries from "lib/models/Countries";
 import connectDB from "lib/mongodb";
 
