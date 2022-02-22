@@ -1,9 +1,6 @@
-const bcrypt = require("bcrypt");
-const { default: withProtect } = require("lib/middlewares/withProtect");
-const { default: withRoles } = require("lib/Hoc/withRoles");
-const { withSentry } = require("@sentry/nextjs");
-const connectDB = require("lib/mongodb");
 const User = require("lib/models/users");
+const bcrypt = require("bcrypt");
+const connectDB = require("lib/mongodb");
 
 function userHandler(req, res) {
 	const { method } = req;
@@ -42,10 +39,8 @@ async function signUp(req, res) {
 			return res.status(500).send(error.message);
 		}
 	} else {
-		return res
-			.status(422)
-			.send({ success: "false", message: "data_incomplete" });
+		res.status(422).send({ success: "false", message: "data_incomplete" });
 	}
 }
 
-module.exports = connectDB(withProtect(withRoles(userHandler, "admin")));
+module.exports = withSentry(connectDB(userHandler));
