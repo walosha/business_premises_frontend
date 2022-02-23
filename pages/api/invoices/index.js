@@ -38,6 +38,7 @@ async function userHandler(req, res) {
 async function createBill(req, res) {
 	if (Object.values(req.body).length > 3) {
 		const { amount, business_id, tax_item_id } = req.body;
+		console.log({ body: amount });
 		let businessStateTIN;
 		try {
 			req.body.created_by = req.user;
@@ -56,6 +57,7 @@ async function createBill(req, res) {
 				Number(amount).toFixed(2) +
 				process.env.PMNT_BASE_URL +
 				ClientID;
+			console.log({ dataConcatenation });
 
 			let config = {
 				headers: {
@@ -72,13 +74,14 @@ async function createBill(req, res) {
 						TaxEntity: {
 							PayerId: businessStateTIN?.StateTIN || "",
 						},
-						Amount: +Number(amount).toFixed(2),
+						Amount: Number(amount).toFixed(2),
 					},
 					CallBackURL: process.env.PMNT_BASE_URL,
 				},
 				config
 			);
-			console.log({ apiResponse: apiResponse?.data?.ResponseObject });
+
+			console.log({ apiResponse: apiResponse });
 			const {
 				MDAName = "",
 				RevenueHeadName = "",
