@@ -27,5 +27,4 @@ out/
 
 commit.sh
 
-# Sentry
-.sentryclirc
+
