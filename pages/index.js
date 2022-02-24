@@ -10,6 +10,8 @@ import { signInform } from "site-constant";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { Page } from "components/Helmet/Helmet";
+import { Toaster } from "react-hot-toast";
+import { notify } from "components/Toast/HotToast";
 
 function Index() {
 	const [isLoading, setLoading] = useState(false);
@@ -49,6 +51,10 @@ function Index() {
 						maxAge: 720,
 						sameSite: true,
 					});
+					notify({
+						message: "You have been successfully authenticated!",
+						header: "Congratulations",
+					});
 					localStorage.setItem("token", token);
 					axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 					return setTimeout(() => Router.push("/admin/dashboard"), 4000);
@@ -57,19 +63,24 @@ function Index() {
 			.catch((err) => {
 				console.log(err);
 				setLoading(false);
-				err?.response?.status === 401 &&
+				if (err?.response?.status === 500) {
+					notify({
+						message: "OOH!",
+						header: "An error occurred, contact the admin",
+					});
+				} else if (err?.response?.status === 401) {
 					setError("password", {
 						type: "server",
 						message: err.response.data.message,
 					});
-				err?.response?.status === 500 &&
-					alert("An error occurred. Please contact the admin!");
+				}
 			});
 	};
 
 	return (
 		<>
 			<Page title={"Welcome"}>
+				<Toaster />
 				<IndexNavbar fixed />
 				<section className="header relative items-center flex h-screen max-h-860-px">
 					<div className="container mx-auto items-center flex flex-wrap">
