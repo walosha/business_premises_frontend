@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 // layout for page
 
@@ -14,11 +14,49 @@ import withAuth from "lib/Hoc/withAuth";
 import { parseCookies } from "utils/parseCookie";
 import useAllowedRoles from "lib/hooks/useRoles";
 import UsersTable from "components/Cards/Users";
+import ReactPaginate from "react-paginate";
 
 function CreateUser() {
 	const { schema } = registerForm;
 	const [isLoading, setLoading] = useState(false);
 	const [success, setSuccess] = useState(false);
+	const [users, setUsers] = useState([]);
+	const [pageOffset, setPageOffset] = useState(0);
+	const [page, setPage] = useState({
+		count: 3,
+		currentPage: 1,
+		hasNextPage: false,
+		hasPrevPage: false,
+		next: null,
+		pageCount: 1,
+		perPage: 50,
+		prev: null,
+	});
+
+	useEffect(() => {
+		setLoading(true);
+		axios
+			.get(`/api/users`)
+			.then((response) => {
+				setUsers(response.data.data.data);
+				setPage(response.data.data.page);
+				setLoading(false);
+			})
+			.catch((err) => setLoading(true));
+	}, []);
+
+	useEffect(() => {
+		async function fetchData() {
+			const response = await axios(
+				`/api/users?page=${pageOffset}`
+				// `/api/payments?limit=1&offset=${pageOffset})`  //set limit
+			);
+			setUsers(response.data.data.data);
+		}
+
+		fetchData();
+	}, [pageOffset]);
+
 	const {
 		handleSubmit,
 		formState: { errors, isValid, isDirty },
@@ -45,6 +83,11 @@ function CreateUser() {
 						message: "Email already Exist",
 					});
 			});
+	};
+
+	const handlePageChange = (event) => {
+		// when its content is loaded in useEffect.
+		setPageOffset(event.selected);
 	};
 
 	return (
@@ -155,7 +198,32 @@ function CreateUser() {
 						</form>
 					</div>{" "}
 				</div>
-				<UsersTable />
+				<div className="flex flex-wrap">
+					<div className="w-full px-4">
+						<div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
+							<UsersTable users={users} />
+						</div>
+						<ReactPaginate
+							previousLabel="Previous"
+							nextLabel="Next"
+							pageClassName="page-item"
+							pageLinkClassName="page-link"
+							previousClassName="page-item"
+							previousLinkClassName="page-link"
+							nextClassName="page-item"
+							nextLinkClassName="page-link"
+							breakLabel="..."
+							breakClassName="page-item"
+							breakLinkClassName="page-link"
+							pageCount={page.pageCount}
+							pageRangeDisplayed={5}
+							onPageChange={handlePageChange}
+							containerClassName="pagination flex"
+							activeClassName="active"
+							// forcePage={pageOffset}
+						/>
+					</div>
+				</div>
 			</div>
 		</>
 	);
