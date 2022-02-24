@@ -161,11 +161,11 @@ function Index() {
 															Forgot password?
 														</Link>
 													</div>
-													{/* <div className="w-1/2 text-right">
+													<div className="w-1/2 text-right">
 														<Link href="/auth/register">
 															Create new account
 														</Link>
-													</div> */}
+													</div>
 												</div>
 											</div>
 										</div>

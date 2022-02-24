@@ -18,7 +18,7 @@ import { withSentry } from "@sentry/nextjs";
 // 		// mongoose.connection.close();
 // 	});
 
-function signInHandler(req, res) {
+function userHandler(req, res) {
 	const { method } = req;
 	switch (method) {
 		case "POST":
@@ -69,4 +69,4 @@ async function signIn(req, res) {
 	}
 }
 
-module.exports = withSentry(connectDB(signInHandler));
+module.exports = withSentry(connectDB(userHandler));
