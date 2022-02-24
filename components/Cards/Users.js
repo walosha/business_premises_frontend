@@ -2,7 +2,7 @@ import React from "react";
 import InvoiceDropdown from "components/Dropdowns/InvoiceDropdown.js";
 import axios from "axios";
 
-export default function UsersTable({ color = "", isLoading }) {
+export default function UsersTable({ users = [], color = "", isLoading }) {
 	return (
 		<div
 			className={
@@ -86,7 +86,9 @@ export default function UsersTable({ color = "", isLoading }) {
 										? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
 										: "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
 								}
-							></th>
+							>
+								Action
+							</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -100,15 +102,7 @@ export default function UsersTable({ color = "", isLoading }) {
 								</td>{" "}
 							</tr>
 						)}
-						{[
-							{
-								key: 1,
-								name: "Olawale Afuye",
-								email: "walosha",
-								role: "Admin",
-								created_at: "",
-							},
-						].map(({ key, name, email, role, created_at }, index) => (
+						{users.map(({ key, name, email, role, created_at }, index) => (
 							<tr key={key}>
 								<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
 									{index + 1}{" "}
@@ -133,7 +127,7 @@ export default function UsersTable({ color = "", isLoading }) {
 												className="bg-blueGray-700 text-white active:bg-blueGray-600 text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150"
 												// onClick={() => router.push("/auth/register")}
 											>
-												Make Admin{" "}
+												{role == "admin" ? "Make User" : "Make Admin"}
 											</button>
 										</li>
 									</ul>
