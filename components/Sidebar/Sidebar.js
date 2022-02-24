@@ -273,9 +273,6 @@ export default function Sidebar() {
 											</Link>
 										</l1>
 										<l1 className="flex text-xs font-bold uppercase p-2">
-											<Link href="/admin/set-up/user_role">User Roles</Link>
-										</l1>
-										<l1 className="flex text-xs font-bold uppercase p-2">
 											<Link href="/admin/set-up/create_user">Create User </Link>
 										</l1>
 										<l1 className="flex text-xs font-bold uppercase p-2">
