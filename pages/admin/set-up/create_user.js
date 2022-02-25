@@ -8,15 +8,18 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import Toast from "components/Toast/Toast";
-import router from "next/router";
+import { useRouter } from "next/router";
 import Admin from "layouts/Admin";
 import withAuth from "lib/Hoc/withAuth";
 import { parseCookies } from "utils/parseCookie";
 import useAllowedRoles from "lib/hooks/useRoles";
 import UsersTable from "components/Cards/Users";
 import ReactPaginate from "react-paginate";
+import { notify } from "components/Toast/HotToast";
+import { Toaster } from "react-hot-toast";
 
 function CreateUser() {
+	const router = useRouter();
 	const { schema } = registerForm;
 	const [isLoading, setLoading] = useState(false);
 	const [success, setSuccess] = useState(false);
@@ -73,7 +76,11 @@ function CreateUser() {
 			.post("/api/auth/create_user", data)
 			.then((res) => {
 				setLoading(false);
-				setSuccess(true);
+				notify({
+					message: "You have been successfully created!",
+					header: "Congratulations",
+				});
+				return setTimeout(() => router.push("/admin/dashboard"), 4000);
 			})
 			.catch((err) => {
 				setLoading(false);
@@ -93,7 +100,7 @@ function CreateUser() {
 	return (
 		<>
 			<div className="container mx-auto px-4 h-full">
-				{success && <Toast />}
+				<Toaster />
 				<div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-100 border-0">
 					<div className="rounded-t bg-white mb-0 px-6 py-6">
 						<div className="text-center flex justify-between">
@@ -137,6 +144,7 @@ function CreateUser() {
 											// autoComplete="off"
 											className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
 											placeholder="Email"
+											autocomplete="off"
 											{...register("email")}
 										/>
 										<span className="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
