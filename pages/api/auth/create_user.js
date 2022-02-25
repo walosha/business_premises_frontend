@@ -1,6 +1,7 @@
 const User = require("lib/models/users");
 const bcrypt = require("bcrypt");
 const connectDB = require("lib/mongodb");
+const { withSentry } = require("@sentry/nextjs");
 
 function userHandler(req, res) {
 	const { method } = req;
