@@ -67,7 +67,7 @@ async function registerBusiness(req, res) {
 				config
 			);
 
-			console.log({ success: util.inspect(apiResponse) });
+			// console.log({ success: util.inspect(apiResponse) });
 
 			const payerIdResponse = apiResponse.data.ResponseObject;
 			const newBusiness = await Business.create({
@@ -79,9 +79,9 @@ async function registerBusiness(req, res) {
 
 			return res.status(200).json({ success: true, data: newBusiness });
 		} catch (error) {
-			console.log({
-				error: util.inspect({ error: error.response.data.ResponseObject }),
-			});
+			// console.log({
+			// 	error: util.inspect({ error: error.response.data.ResponseObject }),
+			// });
 			if (error.name === "MongoServerError" && error.code === 11000) {
 				return res.status(422).send({
 					success: "false",
