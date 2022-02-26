@@ -99,12 +99,17 @@ async function registerBusiness(req, res) {
 }
 
 async function getAllBusinesses(req, res) {
-	const { page } = req.query;
-
+	const { page, text } = req.query;
+	console.log({ text });
 	try {
 		let businesses = await Business.paginate(
-			{},
-			{ ...pageOptions, page, offset: page * 5, sort: "-updated_at" }
+			{ name: { $regex: text ? text : "", $options: "i" } },
+			{
+				...pageOptions,
+				page,
+				offset: page * 5,
+				sort: "-updated_at",
+			}
 		);
 		return res.status(200).json({ success: true, data: businesses });
 	} catch (error) {
@@ -112,4 +117,5 @@ async function getAllBusinesses(req, res) {
 	}
 }
 
-module.exports = connectDB(withProtect(userHandler));
+// module.exports = connectDB(withProtect(userHandler));
+module.exports = connectDB(userHandler);
