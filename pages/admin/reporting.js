@@ -10,6 +10,8 @@ import Businesnes from "components/Cards/Business";
 import axios from "axios";
 import { Page } from "components/Helmet/Helmet";
 import ReactPaginate from "react-paginate";
+import { useDebounce } from "lib/Hoc/useDebounce";
+import { searchItems } from "utils/searchItems";
 
 function Maps() {
 	const [businesses, setBusinesses] = useState([]);
@@ -24,6 +26,28 @@ function Maps() {
 		perPage: 50,
 		prev: null,
 	});
+
+	const [searchTerm, setSearchTerm] = useState("");
+	const debouncedSearchTerm = useDebounce(searchTerm, 1000);
+	// Effect for API call
+	useEffect(
+		() => {
+			if (
+				typeof debouncedSearchTerm === "string" &&
+				debouncedSearchTerm.trim().length > 3
+			) {
+				// setIsSearching(true);
+				searchItems("businesses", debouncedSearchTerm, pageOffset).then(
+					(results) => {
+						// setIsSearching(false);
+						console.log({ results });
+						setBusinesses(results.data);
+					}
+				);
+			}
+		},
+		[debouncedSearchTerm] // Only call effect if debounced search term changes
+	);
 	useEffect(() => {
 		axios
 			.get(`/api/businesses?page=${pageOffset}`)
@@ -46,7 +70,8 @@ function Maps() {
 				</span>
 				<input
 					type="text"
-					placeholder="Search here..."
+					onChange={(e) => setSearchTerm(e.target.value)}
+					placeholder="Search by name"
 					className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative  bg-white rounded text-sm shadow outline-none focus:outline-none focus:ring pl-10"
 				/>
 			</div>

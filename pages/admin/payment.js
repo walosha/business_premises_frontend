@@ -10,6 +10,8 @@ import Payemts from "components/Cards/Payemts";
 import { Page } from "components/Helmet/Helmet";
 import ReactPaginate from "react-paginate";
 import axios from "axios";
+import { useDebounce } from "lib/Hoc/useDebounce";
+import { searchItems } from "utils/searchItems";
 
 function Payments() {
 	const [invoices, setInvoices] = useState([]);
@@ -25,6 +27,25 @@ function Payments() {
 		prev: null,
 	});
 	const [isLoading, setLoading] = useState(false);
+	const [searchTerm, setSearchTerm] = useState("");
+	const debouncedSearchTerm = useDebounce(searchTerm, 1000);
+	// Effect for API call
+	useEffect(
+		() => {
+			if (debouncedSearchTerm) {
+				setIsSearching(true);
+				searchItems(debouncedSearchTerm).then((results) => {
+					// setIsSearching(false);
+					setInvoices(results);
+				});
+			} else {
+				setInvoices([]);
+				// setIsSearching(false);
+			}
+		},
+		[debouncedSearchTerm] // Only call effect if debounced search term changes
+	);
+
 	useEffect(() => {
 		setLoading(true);
 		axios
@@ -61,6 +82,7 @@ function Payments() {
 				</span>
 				<input
 					type="text"
+					onChange={(e) => setSearchTerm(e.target.value)}
 					placeholder="Search here..."
 					className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative  bg-white rounded text-sm shadow outline-none focus:outline-none focus:ring pl-10"
 				/>
