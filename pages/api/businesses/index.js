@@ -100,7 +100,6 @@ async function registerBusiness(req, res) {
 
 async function getAllBusinesses(req, res) {
 	const { page, text } = req.query;
-	console.log({ text });
 	try {
 		let businesses = await Business.paginate(
 			{ name: { $regex: text ? text : "", $options: "i" } },
@@ -116,6 +115,4 @@ async function getAllBusinesses(req, res) {
 		return res.status(500).send(error.message);
 	}
 }
-
-// module.exports = connectDB(withProtect(userHandler));
-module.exports = connectDB(userHandler);
+module.exports = connectDB(withProtect(userHandler));
