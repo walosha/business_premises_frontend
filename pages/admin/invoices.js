@@ -10,6 +10,8 @@ import InvoiceTable from "components/Cards/Invoice";
 import { Page } from "components/Helmet/Helmet";
 import ReactPaginate from "react-paginate";
 import axios from "axios";
+import { useDebounce } from "lib/Hoc/useDebounce";
+import { searchItems } from "utils/searchItems";
 
 function Maps() {
 	const [invoices, setInvoices] = useState([]);
@@ -26,6 +28,42 @@ function Maps() {
 		prev: null,
 	});
 
+	const [searchTerm, setSearchTerm] = useState("");
+	const debouncedSearchTerm = useDebounce(searchTerm, 1000);
+	// Effect for API call
+	useEffect(
+		() => {
+			if (debouncedSearchTerm) {
+				// setIsSearching(true);
+				searchItems("invoices", debouncedSearchTerm, pageOffset).then(
+					(results) => {
+						// setIsSearching(false);
+						console.log(377777, results.data);
+
+						setInvoices(results.data);
+					}
+				);
+			} else {
+				setInvoices([]);
+				// setIsSearching(false);
+			}
+		},
+		[debouncedSearchTerm] // Only call effect if debounced search term changes
+	);
+
+	// useEffect(() => {
+	// 	setLoading(true);
+	// 	axios
+	// 		.get("/api/invoices")
+	// 		.then((response) => {
+	// 			console.log(2, response.data.data.data);
+
+	// 			setInvoices(response.data.data.data);
+	// 			setPage(response.data.data.page);
+	// 			setLoading(false);
+	// 		})
+	// 		.catch((err) => setLoading(true));
+	// }, []);
 	useEffect(() => {
 		setLoading(true);
 		axios

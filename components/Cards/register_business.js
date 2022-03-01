@@ -73,15 +73,24 @@ function CardSettings() {
 			})
 			.catch((err) => {
 				if (err?.response?.status === 401) {
+					console.log("error1");
+
 					localStorage.removeItem("token");
 					router.push("/");
-				}
-				setLoading(false);
-				err?.response?.status === 422 &&
+				} else if (err?.response?.status === 422) {
+					console.log("error3");
 					setError("reg_no", {
 						type: "server",
 						message: err.response.data.message,
 					});
+				} else {
+					console.log("error");
+					notify({
+						message: "Contact the Admin",
+						header: "Oops!",
+					});
+				}
+				setLoading(false);
 			});
 	};
 	return (

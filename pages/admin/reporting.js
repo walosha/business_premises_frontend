@@ -41,7 +41,7 @@ function Maps() {
 					(results) => {
 						// setIsSearching(false);
 						console.log({ results });
-						setBusinesses(results.data);
+						setBusinesses(results.data.data);
 					}
 				);
 			}

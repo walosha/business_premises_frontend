@@ -140,7 +140,7 @@ async function deleteBill(req, res) {
 }
 
 async function getAllInvoices(req, res) {
-	const { id, page } = req.query;
+	const { id, page, text } = req.query;
 
 	try {
 		if (id) {
@@ -148,7 +148,7 @@ async function getAllInvoices(req, res) {
 			return res.status(200).json({ success: true, data: invoice });
 		}
 		let businesses = await Invoice.paginate(
-			{ status: 0 },
+			{ InvoiceNumber: { $regex: text ? text : "", $options: "i" }, status: 0 },
 			{ ...pageOptions, page, offset: page * 5, sort: "-updated_at" }
 		);
 		return res.status(200).json({ success: true, data: businesses });

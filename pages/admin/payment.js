@@ -12,6 +12,7 @@ import ReactPaginate from "react-paginate";
 import axios from "axios";
 import { useDebounce } from "lib/Hoc/useDebounce";
 import { searchItems } from "utils/searchItems";
+import { offset } from "@popperjs/core";
 
 function Payments() {
 	const [invoices, setInvoices] = useState([]);
@@ -33,11 +34,15 @@ function Payments() {
 	useEffect(
 		() => {
 			if (debouncedSearchTerm) {
-				setIsSearching(true);
-				searchItems(debouncedSearchTerm).then((results) => {
-					// setIsSearching(false);
-					setInvoices(results);
-				});
+				// setIsSearching(true);
+				searchItems("payments", debouncedSearchTerm, pageOffset).then(
+					(results) => {
+						// setIsSearching(false);
+						console.log(377777, results.data);
+
+						setInvoices(results.data);
+					}
+				);
 			} else {
 				setInvoices([]);
 				// setIsSearching(false);
@@ -51,6 +56,8 @@ function Payments() {
 		axios
 			.get("/api/payments")
 			.then((response) => {
+				console.log(2, response.data.data.data);
+
 				setInvoices(response.data.data.data);
 				setPage(response.data.data.page);
 				setLoading(false);
@@ -60,10 +67,8 @@ function Payments() {
 
 	useEffect(() => {
 		async function fetchData() {
-			const response = await axios(
-				`/api/payments?page=${pageOffset}`
-				// `/api/payments?limit=1&offset=${pageOffset})`  //set limit
-			);
+			const response = await axios(`/api/payments?page=${pageOffset}`);
+			console.log(1, response.data.data.data);
 			setInvoices(response.data.data.data);
 		}
 
@@ -83,7 +88,7 @@ function Payments() {
 				<input
 					type="text"
 					onChange={(e) => setSearchTerm(e.target.value)}
-					placeholder="Search here..."
+					placeholder="Search by invoice number"
 					className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative  bg-white rounded text-sm shadow outline-none focus:outline-none focus:ring pl-10"
 				/>
 			</div>

@@ -52,7 +52,7 @@ export default function CardTable({ color, invoices, isLoading }) {
 											: "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
 									}
 								>
-									MDA
+									Invoice Number{" "}
 								</th>
 								<th
 									className={
@@ -141,6 +141,7 @@ export default function CardTable({ color, invoices, isLoading }) {
 										id,
 										AmountPaid,
 										PaymentRef,
+										InvoiceNumber,
 										invoice_id: {
 											tax_item_id,
 											mda_id,
@@ -156,7 +157,7 @@ export default function CardTable({ color, invoices, isLoading }) {
 											{index + 1}{" "}
 										</td>
 										<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-											{mda_id}{" "}
+											{InvoiceNumber}{" "}
 										</td>
 										<th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
 											<span
