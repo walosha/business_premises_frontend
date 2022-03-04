@@ -30,6 +30,7 @@ async function signUp(req, res) {
 			});
 			// Create new user
 			var usercreated = await user.save();
+			delete usercreated.password;
 			return res.status(200).send(usercreated);
 		} catch (error) {
 			if (error.name === "MongoServerError" && error.code === 11000) {

@@ -66,7 +66,7 @@ async function createPayment(req, res) {
 			return res.status(500).json({ success: false, data: error.message });
 		}
 	}
-	return res.status(500).json({ success: false, data: "Fill all fields" });
+	return res.status(401).json({ success: false, data: "Invalid" });
 }
 
 module.exports = withSentry(connectDB(userHandler));
