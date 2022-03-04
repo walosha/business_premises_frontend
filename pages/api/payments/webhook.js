@@ -30,15 +30,12 @@ async function createPayment(req, res) {
 		...others
 	} = req.body;
 	const concatString =
-		InvoiceNumber + PaymentRef + AmountPaid + RequestReference;
-	console.log(generateHMAC256Auth(concatString), Mac);
-	const concatStringWithoutNull =
-		InvoiceNumber + PaymentRef + AmountPaid + RequestReference;
-	console.log({ concatStringWithoutNull });
+		InvoiceNumber +
+		PaymentRef +
+		Number(AmountPaid).toFixed(2) +
+		RequestReference;
 
-	const isvalid = generateHMAC256Auth(concatString) === Mac;
-	console.log({ isvalid });
-	if (InvoiceNumber) {
+	if (generateHMAC256Auth(concatString) === Mac) {
 		try {
 			const invoice = await Invoice.findOne({ InvoiceNumber });
 			if (invoice?.status == 1) {
