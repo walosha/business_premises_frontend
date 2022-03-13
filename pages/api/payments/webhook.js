@@ -30,15 +30,12 @@ async function createPayment(req, res) {
 		...others
 	} = req.body;
 	const concatString =
-		InvoiceNumber + PaymentRef + AmountPaid + RequestReference;
-	console.log(generateHMAC256Auth(concatString), Mac);
-	const concatStringWithoutNull =
-		InvoiceNumber + PaymentRef + AmountPaid + RequestReference;
-	console.log({ concatStringWithoutNull });
+		InvoiceNumber + PaymentRef + Number(AmountPaid).toFixed(2);
+	console.log({ concatString });
 
 	const isvalid = generateHMAC256Auth(concatString) === Mac;
 	console.log({ isvalid });
-	if (InvoiceNumber) {
+	if (isvalid) {
 		try {
 			const invoice = await Invoice.findOne({ InvoiceNumber });
 			if (invoice?.status == 1) {
@@ -69,7 +66,7 @@ async function createPayment(req, res) {
 			return res.status(500).json({ success: false, data: error.message });
 		}
 	}
-	return res.status(500).json({ success: false, data: "Fill all fields" });
+	return res.status(401).json({ success: false, data: "Invalid" });
 }
 
 module.exports = withSentry(connectDB(userHandler));

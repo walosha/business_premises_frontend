@@ -1,7 +1,7 @@
 import connectDB from "lib/mongodb";
 import withProtect from "lib/middlewares/withProtect";
-// import "lib/models/Businesses";
-import Payment from "lib/models/Payment";
+import User from "lib/models/users";
+// import Businesses from "lib/models/Businesses";
 import { pageOptions } from "lib/models/paginate";
 import { withSentry } from "@sentry/nextjs";
 
@@ -11,7 +11,11 @@ async function userHandler(req, res) {
 	switch (method) {
 		case "GET":
 			// Update or create data in your database
-			getAllPayments(req, res);
+			getAllUsers(req, res);
+			break;
+		case "PATCH":
+			// Update or create data in your database
+			getAllUsers(req, res);
 			break;
 		default:
 			res.setHeader("Allow", ["GET"]);
@@ -19,21 +23,23 @@ async function userHandler(req, res) {
 	}
 }
 
-async function getAllPayments(req, res) {
-	const { id, page = 1, text } = req.query;
+async function getAllUsers(req, res) {
+	const { id, page = 1 } = req.query;
 
 	try {
 		if (id) {
-			let invoice = await Payment.findById(id).populate();
-			return res.status(200).json({ success: true, data: invoice });
+			let user = await User.findById(id).populate();
+			return res
+				.status(200)
+				.json({ success: true, data: user })
+				.select("-password");
 		}
 
-		let payments = await Payment.paginate(
-			{ InvoiceNumber: { $regex: text ? text : "", $options: "i" } },
-
+		let users = await User.paginate(
+			{},
 			{ ...pageOptions, page, offset: page * 5, sort: "-updated_at" }
 		);
-		return res.status(200).json({ success: true, data: payments });
+		return res.status(200).json({ success: true, data: users });
 	} catch (error) {
 		return res.status(500).send(error.message);
 	}

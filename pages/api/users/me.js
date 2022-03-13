@@ -1,6 +1,5 @@
 import { withSentry } from "@sentry/nextjs";
 import withProtect from "lib/middlewares/withProtect";
-import Users from "lib/models/users";
 import connectDB from "lib/mongodb";
 
 async function userHandler(req, res) {
@@ -19,6 +18,7 @@ async function userHandler(req, res) {
 
 async function getMe(req, res) {
 	try {
+		delete req.user.password;
 		return res.status(200).json({ success: true, data: req.user });
 	} catch (error) {
 		return res.status(500).send(error.message);

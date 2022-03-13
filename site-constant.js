@@ -51,7 +51,12 @@ export const registerBusinessForm = {
 		name: Yup.string().required(),
 		reg_no: Yup.string().min(5).required("registration number is required"),
 		owner_name: Yup.string().required("owner is required"),
-		phone: Yup.string().required(),
+		phone: Yup.string()
+			.required()
+			.matches(
+				/^(?:(?:(?:\+?234(?:\h1)?|01)\h*)?(?:\(\d{3}\)|\d{3})|\d{4})(?:\W*\d{3})?\W*\d{4}$/,
+				"Invalid phone number format"
+			),
 		email: Yup.string().email("Invalid email format"),
 		employee_no: Yup.number("employee number is required")
 			.typeError("No. of Employee must be a number")

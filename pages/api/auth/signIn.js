@@ -50,7 +50,7 @@ async function signIn(req, res) {
 			}
 
 			const token = signToken({ id: user._id, role: user.role });
-
+			delete user.password;
 			// Sign IN user
 			return res.status(200).send({
 				status: "success",
