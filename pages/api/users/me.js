@@ -1,6 +1,5 @@
 import { withSentry } from "@sentry/nextjs";
 import withProtect from "lib/middlewares/withProtect";
-import Users from "lib/models/users";
 import connectDB from "lib/mongodb";
 
 async function userHandler(req, res) {

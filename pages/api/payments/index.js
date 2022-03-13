@@ -1,8 +1,7 @@
 import connectDB from "lib/mongodb";
 import withProtect from "lib/middlewares/withProtect";
+// import "lib/models/Businesses";
 import Payment from "lib/models/Payment";
-import Invoice from "lib/models/Invoice";
-// import Businesses from "lib/models/Businesses";
 import { pageOptions } from "lib/models/paginate";
 import { withSentry } from "@sentry/nextjs";
 
