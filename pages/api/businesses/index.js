@@ -54,7 +54,7 @@ async function registerBusiness(req, res) {
 			};
 
 			const apiResponse = await axios.post(
-				"https://uat.nasarawaigr.com/api/v1/statetin/create",
+				"https://nasarawaigr.com/api/v1/statetin/create",
 				{
 					Name: name,
 					PhoneNumber: phone,
@@ -67,7 +67,7 @@ async function registerBusiness(req, res) {
 				config
 			);
 
-			// console.log({ success: util.inspect(apiResponse) });
+			console.log({ success: util.inspect(apiResponse) });
 
 			const payerIdResponse = apiResponse.data.ResponseObject;
 			const newBusiness = await Business.create({
