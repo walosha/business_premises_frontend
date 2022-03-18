@@ -5,6 +5,7 @@ import { generateHMAC256Auth } from "utils/generateHMAC256Auth";
 import { withSentry } from "@sentry/nextjs";
 import { allowCors } from "lib/Hoc/useEnableCors";
 require("lib/models/Businesses");
+require("lib/models/users");
 
 async function userHandler(req, res) {
 	const { method } = req;
