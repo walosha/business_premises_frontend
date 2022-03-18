@@ -3,6 +3,7 @@ import Payment from "lib/models/Payment";
 import Invoice from "lib/models/Invoice";
 import { generateHMAC256Auth } from "utils/generateHMAC256Auth";
 import { withSentry } from "@sentry/nextjs";
+import { allowCors } from "lib/Hoc/useenableCors";
 // import Businesses from "lib/models/Businesses";
 
 async function userHandler(req, res) {
@@ -44,7 +45,6 @@ async function createPayment(req, res) {
 
 			if (invoice) {
 				await Payment.create({
-					...others,
 					InvoiceNumber,
 					AmountPaid,
 					...others,
@@ -69,4 +69,4 @@ async function createPayment(req, res) {
 	return res.status(401).json({ success: false, data: "Invalid" });
 }
 
-module.exports = withSentry(connectDB(userHandler));
+module.exports = withSentry(connectDB(allowCors(userHandler)));
