@@ -6,6 +6,9 @@ import { pageOptions } from "lib/models/paginate";
 import { generateHMAC256Auth } from "utils/generateHMAC256Auth";
 import axios from "axios";
 import { withSentry } from "@sentry/nextjs";
+require("lib/models/Businesses");
+require("lib/models/Invoice");
+require("lib/models/Payment");
 
 const ClientID = process.env.CLIENTID;
 

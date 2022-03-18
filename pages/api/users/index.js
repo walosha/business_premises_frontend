@@ -1,7 +1,6 @@
 import connectDB from "lib/mongodb";
 import withProtect from "lib/middlewares/withProtect";
 import User from "lib/models/users";
-// import Businesses from "lib/models/Businesses";
 import { pageOptions } from "lib/models/paginate";
 import { withSentry } from "@sentry/nextjs";
 
