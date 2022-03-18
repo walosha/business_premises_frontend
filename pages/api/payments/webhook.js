@@ -3,7 +3,7 @@ import Payment from "lib/models/Payment";
 import Invoice from "lib/models/Invoice";
 import { generateHMAC256Auth } from "utils/generateHMAC256Auth";
 import { withSentry } from "@sentry/nextjs";
-import { allowCors } from "lib/Hoc/useenableCors";
+import { allowCors } from "lib/Hoc/useEnableCors";
 // import Businesses from "lib/models/Businesses";
 
 async function userHandler(req, res) {
