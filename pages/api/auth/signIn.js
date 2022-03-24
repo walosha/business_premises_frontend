@@ -3,11 +3,12 @@ import connectDB from "lib/mongodb";
 import { signToken } from "utils/generateToken";
 import bcrypt from "bcrypt";
 import { withSentry } from "@sentry/nextjs";
-// import cookie from "cookie";
-// import TaxItems from "lib/models/taxItems";
-// import { taxItems } from "../../../files/tax_items";
 
-// TaxItems.create(taxItems)
+// User.create({
+// 	name: "olawale Afuye",
+// 	email: "walosha@yahoo.com",
+// 	password: "$2a$06$hAYG5TwJcL/duevZDPOGheM1idLViNLQUIFSTaAe9S8TiOPXMfEhW", //Olajuwon1?
+// })
 // 	.then((item) => {
 // 		console.log(`${item.length} items created`);
 // 	})

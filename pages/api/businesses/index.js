@@ -85,6 +85,16 @@ async function registerBusiness(req, res) {
 			console.log({
 				error: util.inspect({ error: error.response.data.ResponseObject }),
 			});
+
+			if (
+				Array.isArray(error.response.data.ResponseObject) &&
+				error.response.data.ResponseObject[0]?.ErrorMessage
+			) {
+				return res.status(422).send({
+					success: "false",
+					message: error.response.data.ResponseObject[0]?.ErrorMessage,
+				});
+			}
 			if (error.name === "MongoServerError" && error.code === 11000) {
 				return res.status(422).send({
 					success: "false",
