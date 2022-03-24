@@ -98,10 +98,26 @@ function CardSettings() {
 			<Toaster />
 			<div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-100 border-0">
 				<div className="rounded-t bg-white mb-0 px-6 py-6">
-					<div className="text-center flex justify-between">
+					<div className="text-center flex justify-between flex-col">
 						<h6 className="text-blueGray-700 text-xl font-bold">
 							Business Registration Form
 						</h6>
+						<ul>
+							<li className="text-red-500 text-xs">
+								The Phone must be unique i.e (Not associated with existing
+								business on this platform)
+							</li>
+							<li className="text-red-500 text-xs">
+								The email must be unique (Not associated with existing business
+								on this platform)
+							</li>
+							<li className="text-red-500 text-xs">
+								Registration number must be unique to businesses
+							</li>
+							<li className="text-red-500 text-xs">
+								The address field value must be between 10 and 200 characters
+							</li>
+						</ul>
 					</div>
 				</div>
 				<div className="flex-auto px-4 mt-4 lg:px-10 py-10 pt-0">

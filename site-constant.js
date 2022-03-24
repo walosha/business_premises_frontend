@@ -64,7 +64,7 @@ export const registerBusinessForm = {
 		lga: Yup.string().required(),
 		business_type: Yup.string().required(),
 		business_structure: Yup.string().required("business structure is required"),
-		address: Yup.string().required(),
+		address: Yup.string().min(10).max(200).required(),
 		state: Yup.string().required(),
 		country: Yup.string().required(),
 	}),
