@@ -118,8 +118,9 @@ async function getAllBusinesses(req, res) {
 			{ name: { $regex: text ? text : "", $options: "i" } },
 			{
 				...pageOptions,
+				offset: page * 50,
 				page,
-				offset: page * 5,
+
 				sort: "-updated_at",
 			}
 		);

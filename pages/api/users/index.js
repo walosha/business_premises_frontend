@@ -36,7 +36,7 @@ async function getAllUsers(req, res) {
 
 		let users = await User.paginate(
 			{},
-			{ ...pageOptions, page, offset: page * 5, sort: "-updated_at" }
+			{ ...pageOptions, offset: page * 50, page, sort: "-updated_at" }
 		);
 		return res.status(200).json({ success: true, data: users });
 	} catch (error) {
