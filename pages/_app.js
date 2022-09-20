@@ -1,11 +1,12 @@
-import React, { useEffect } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
+import App from "next/app";
 import Head from "next/head";
 import Router from "next/router";
 import NextNProgress from "nextjs-progressbar";
 import { CookiesProvider } from "react-cookie";
 import PageChange from "components/PageChange/PageChange.js";
-import Maintenance from "components/Maintenance";
+
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "styles/tailwind.css";
 import axios from "axios";
@@ -26,10 +27,8 @@ Router.events.on("routeChangeError", () => {
   document.body.classList.remove("body-page-transition");
 });
 
-export default function MyApp({ Component, pageProps }) {
-  const Layout = Component.layout || (({ children }) => <>{children}</>);
-
-  useEffect(() => {
+export default class MyApp extends App {
+  componentDidMount() {
     const token = localStorage.getItem("token");
     if (token)
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -41,11 +40,21 @@ Business Premises
 
 `);
     document.insertBefore(comment, document.documentElement);
-  }, []);
+  }
+  static async getInitialProps({ Component, router, ctx }) {
+    let pageProps = {};
 
-  if (process.env.NEXT_PUBLIC_MAINTENANCE_MODE === "true") {
-    return <Maintenance />;
-  } else {
+    if (Component.getInitialProps) {
+      pageProps = await Component.getInitialProps(ctx);
+    }
+
+    return { pageProps };
+  }
+  render() {
+    const { Component, pageProps } = this.props;
+
+    const Layout = Component.layout || (({ children }) => <>{children}</>);
+
     return (
       <React.Fragment>
         <Head>
@@ -66,13 +75,3 @@ Business Premises
     );
   }
 }
-
-MyApp.getInitialProps = async ({ Component, router, ctx }) => {
-  let pageProps = {};
-
-  if (Component.getInitialProps) {
-    pageProps = await Component.getInitialProps(ctx);
-  }
-
-  return { pageProps };
-};
