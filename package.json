@@ -47,7 +47,7 @@
     "yup": "^0.32.11"
   },
   "scripts": {
-    "start": "next start",
+    "start": "next start -p 9090",
     "build": "next build",
     "dev": "next dev -p 3170",
     "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm run build:tailwind && npm run dev",
